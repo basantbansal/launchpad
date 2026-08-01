@@ -2,9 +2,18 @@
 
 MetaCall Launchpad is the official web-based interface for managing and deploying polyglot applications to the MetaCall Function-as-a-Service (FaaS) platform. It allows developers to configure environments, inspect active deployments, monitor real-time logs, and invoke polyglot functions directly from the browser.
 
-## Demonstration
+## Overview
 
-A complete walk-through of the primary developer workflow—including deployment management, and real-time polyglot function execution:
+This project is built with:
+- **[React](https://react.dev/)** + **[TypeScript](https://www.typescriptlang.org/)** — Core UI framework
+- **[Vite](https://vitejs.dev/)** — Build tooling and dev server
+- **[Tailwind CSS](https://tailwindcss.com/)** — Styling framework
+- **[Vitest](https://vitest.dev/)** — Unit testing
+- **[Playwright](https://playwright.dev/)** — End-to-end testing
+
+## See It in Action
+
+A complete walk-through of the primary developer workflow — deployment management, real-time logs, and polyglot function execution:
 
 <p align="center">
   <video src="https://github.com/user-attachments/assets/123bdb2c-f7a6-4530-a8a0-c0726e29cd68" width="640" controls>
@@ -29,23 +38,63 @@ A complete walk-through of the primary developer workflow—including deployment
 * **npm**: Version 10.0.0 or higher
 * **MetaCall FaaS Backend**: A running instance of the MetaCall FaaS server (defaults to `http://localhost:9000`)
 
-### Installation & Run
+### Run Locally
 
-1. Clone the repository and install dependencies:
+1. Fork the repository by clicking **Fork** on the top right of the main repository.
+2. Clone your fork:
    ```bash
+   git clone https://github.com/<your-username>/dashboard.git
    cd Dashboard
+   ```
+3. Install dependencies:
+   ```bash
    npm install
    ```
-2. Configure your environment:
+4. Configure your environment:
    ```bash
    cp .env.example .env
    ```
    Set `VITE_FAAS_URL` to point to your running FaaS backend.
-3. Start the local development server:
+5. Start the local development server:
    ```bash
    npm run dev
    ```
-   By default, the application runs at `http://localhost:5173`.
+   Access the live development server at `http://localhost:5173`.
+## Project Structure
+
+```
+Dashboard/
+├── .github/                  # GitHub workflows, PR & issue templates
+├── public/                   # Static assets (logos, loaders, demo video)
+├── src/
+│   ├── app/                  # App-level configuration (router, providers)
+│   ├── assets/               # Imported assets (images, SVGs)
+│   ├── features/             # Feature modules (each is self-contained)
+│   │   ├── auth/             # Authentication & login
+│   │   ├── chat/             # Live support chat
+│   │   ├── dashboard/        # Main dashboard view
+│   │   ├── deployments/      # Deployment management (ZIP, Git, templates)
+│   │   ├── logs/             # Real-time log streaming
+│   │   ├── plan/             # Subscription & billing
+│   │   └── settings/         # User settings & API tokens
+│   ├── lib/                  # Utility libraries & helpers
+│   ├── pages/                # Route-level page components
+│   ├── services/             # API service layer (FaaS communication)
+│   ├── shared/               # Shared UI components, types, constants
+│   │   ├── ui/               # Reusable UI components
+│   │   ├── layout/           # Layout components (sidebar, header)
+│   │   ├── types/            # Shared TypeScript types
+│   │   └── constants/        # App-wide constants
+│   └── styles/               # Global styles & Tailwind config
+├── tests/                    # Playwright E2E tests
+│   ├── e2e/                  # End-to-end test specs
+│   ├── fixtures/             # Test fixtures & helpers
+│   ├── mocks/                # Mock data for tests
+│   └── pages/                # Page Object Models
+├── vite.config.ts            # Vite configuration
+├── playwright.config.ts      # Playwright configuration
+└── package.json              # Dependencies & scripts
+```
 
 ## Commands Reference
 
@@ -72,13 +121,13 @@ Please check out our [Contributing Guidelines](CONTRIBUTING.md) to see how you c
 
 To ensure a positive and inclusive environment, please review our [Code of Conduct](https://github.com/metacall/.github/blob/master/CODE_OF_CONDUCT.md).
 
-## Community
+## Connect with MetaCall Community
 
-* **Discussion Forum**: [Join the Conversation](https://github.com/metacall/core/discussions)
-* **Twitter**: [Follow Us](https://twitter.com/metacallio)
-* **Discord**: [Join our Discord](https://discord.gg/upwP4mwJWa)
-* **Telegram**: [Join our Telegram](https://t.me/joinchat/BMSVbBatp0Vi4s5l4VgUgg)
-* **Matrix**: [Join our Matrix](https://matrix.to/#/#metacall:matrix.org)
+<a href="https://github.com/metacall/core/discussions"><img src="https://img.shields.io/badge/GitHub-Discussions-333?logo=github" alt="GitHub Discussions"></a>
+<a href="https://twitter.com/metacallio"><img src="https://img.shields.io/badge/Twitter-@metacallio-1DA1F2?logo=twitter&logoColor=white" alt="Twitter"></a>
+<a href="https://discord.gg/upwP4mwJWa"><img src="https://img.shields.io/badge/Discord-Join%20Server-5865F2?logo=discord&logoColor=white" alt="Discord"></a>
+<a href="https://t.me/joinchat/BMSVbBatp0Vi4s5l4VgUgg"><img src="https://img.shields.io/badge/Telegram-Join%20Group-26A5E4?logo=telegram&logoColor=white" alt="Telegram"></a>
+<a href="https://matrix.to/#/#metacall:matrix.org"><img src="https://img.shields.io/badge/Matrix-Join%20Room-0DBD8B?logo=matrix&logoColor=white" alt="Matrix"></a>
 
 ## License
 
