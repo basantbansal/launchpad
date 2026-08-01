@@ -64,9 +64,9 @@ For detailed information about tests and E2E setup, refer to the [Testing Guide]
 
 ## Contributing
 
-1. Fork the repository and create a branch.
-2. Ensure linting, type-checking, and unit tests pass before committing.
-3. Submit a Pull Request to the main branch.
+We are thrilled to welcome contributions from our community! Whether you are squashing a bug, proposing an exciting new feature, or submitting a pull request, your help is incredibly valuable to us.
+
+Please check out our [Contributing Guidelines](CONTRIBUTING.md) to see how you can get started, set up your development environment, and submit your work. If you encounter any issues, please feel free to open one!
 
 ## Code of Conduct
 
@@ -79,8 +79,6 @@ To ensure a positive and inclusive environment, please review our [Code of Condu
 * **Discord**: [Join our Discord](https://discord.gg/upwP4mwJWa)
 * **Telegram**: [Join our Telegram](https://t.me/joinchat/BMSVbBatp0Vi4s5l4VgUgg)
 * **Matrix**: [Join our Matrix](https://matrix.to/#/#metacall:matrix.org)
-
-## License
 
 ## License
 
