@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Folder, ChevronDown, ChevronRight, Plus, Eye, EyeOff, AlertTriangle, X, Loader2, Code2 } from 'lucide-react';
+import { toast } from 'sonner';
 import { api } from '@/lib/api-client';
 import { SVGLoader } from '@/shared/ui/LoadingState';
 import JSZip from 'jszip';
@@ -275,10 +276,12 @@ export default function DeployWizardPage() {
   };
 
   const handleDeployReady = useCallback((deployment: { suffix: string }) => {
+    toast.success('Deployed successfully!');
     navigate(`/deployments/${deployment.suffix}`, { replace: true });
   }, [navigate]);
 
   const handleDeployFailed = useCallback((message: string) => {
+    toast.error(`Deploy failed: ${message}`);
     setDeployError(message);
     setDeployTarget(null);
   }, []);
