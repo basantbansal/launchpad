@@ -28,20 +28,6 @@ async function authFetch(input: RequestInfo | URL, init?: RequestInit): Promise<
 
   const newInit = { ...init };
 
-  if (newInit && newInit.method === 'POST' && (urlStr.includes('/login') || urlStr.includes('/signup'))) {
-    try {
-      if (typeof newInit.body === 'string') {
-        const bodyObj = JSON.parse(newInit.body) as Record<string, unknown>;
-        if (!bodyObj['g-recaptcha-response']) {
-          bodyObj['g-recaptcha-response'] = 'empty';
-          newInit.body = JSON.stringify(bodyObj);
-        }
-      }
-    } catch {
-      // Ignore
-    }
-  }
-
   const res = await fetch(input, newInit);
 
   if (!res.ok && (urlStr.includes('/login') || urlStr.includes('/signup'))) {
@@ -393,7 +379,7 @@ export const api = {
     }
   },
 
-  login: async (email: string, password: string): Promise<string> => {
+  login: async (email: string, password: string, captchaToken?: string): Promise<string> => {
     try {
       const res = await authFetch(`${BASE_URL}/login`, {
         method: 'POST',
@@ -403,7 +389,7 @@ export const api = {
           Origin: BASE_URL,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password, 'g-recaptcha-response': captchaToken || 'empty' })
       });
 
       if (!res.ok) {
@@ -431,7 +417,7 @@ export const api = {
     }
   },
 
-  signup: async (email: string, password: string, alias: string): Promise<string> => {
+  signup: async (email: string, password: string, alias: string, captchaToken?: string): Promise<string> => {
     try {
       const res = await authFetch(`${BASE_URL}/signup`, {
         method: 'POST',
@@ -441,7 +427,7 @@ export const api = {
           Origin: BASE_URL,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, password, alias })
+        body: JSON.stringify({ email, password, alias, 'g-recaptcha-response': captchaToken || 'empty' })
       });
 
       if (!res.ok) {
