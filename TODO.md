@@ -1,11 +1,13 @@
 # MetaCall Launchpad — TODO List
 
-> **Contributor Guidelines & Prerequisites:**
+> **Contributor Guidelines & Workflow:**
 > - **Architecture First**: Before contributing, thoroughly review the project documentation to understand the MetaCall architecture (FaaS backend, `@metacall/protocol` SDK, Deploy CLI, and Launchpad frontend).
+> - **Issue & Approach First**: Before starting work, **open an issue** and briefly comment with your proposed technical approach before making changes.
 > - **Mandatory Test Coverage**: Every Pull Request (whether fixing a bug, adding a feature, or refactoring) **MUST** include corresponding unit tests (`src/tests/unit/`) or end-to-end tests (`src/tests/e2e/`) covering your code changes.
-> - **Pre-PR Verification**: Verify that `npm run typecheck`, `npm run lint`, and `npm run test` execute without errors or warnings before opening a Pull Request.
+> - **Pre-PR Verification**: Verify that `npm run typecheck`, `npm run lint`, and `npm run test` execute without errors or warnings before submitting a Pull Request.
 
 ---
+
 
 
 
