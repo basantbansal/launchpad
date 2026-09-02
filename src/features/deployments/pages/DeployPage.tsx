@@ -8,11 +8,7 @@ import {
   FolderSync,
   GitBranch,
 } from 'lucide-react';
-import {
-  normalizePlan,
-  readStoredPlan,
-  writeStoredPlan,
-} from '@/shared/lib/plan';
+import { normalizePlan, readStoredPlan, writeStoredPlan } from '@/shared/lib/plan';
 
 export default function DeployHubPage() {
   const navigate = useNavigate();
@@ -20,7 +16,9 @@ export default function DeployHubPage() {
   const inputRef = useRef<HTMLInputElement>(null);
   const searchParams = new URLSearchParams(location.search);
   const plan = normalizePlan(
-    (location.state as { plan?: string } | null)?.plan ?? searchParams.get('plan') ?? readStoredPlan(),
+    (location.state as { plan?: string } | null)?.plan ??
+      searchParams.get('plan') ??
+      readStoredPlan(),
   );
 
   useEffect(() => {
@@ -46,7 +44,9 @@ export default function DeployHubPage() {
     e.preventDefault();
   };
 
-  {/* we make  also deployment page for small devices first, so we can hide some content on mobile for better UX and user friendly experience, and show more details on desktop */}
+  {
+    /* we make  also deployment page for small devices first, so we can hide some content on mobile for better UX and user friendly experience, and show more details on desktop */
+  }
   return (
     <div className="grow flex flex-col items-center justify-start p-6 pt-12 relative overflow-hidden animate-in fade-in duration-500 bg-white">
       <div className="max-w-4xl w-full z-10 flex flex-col gap-10">

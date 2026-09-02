@@ -1,6 +1,18 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, Folder, ChevronDown, ChevronRight, Plus, Eye, EyeOff, AlertTriangle, X, Loader2, Code2 } from 'lucide-react';
+import {
+  ArrowLeft,
+  Folder,
+  ChevronDown,
+  ChevronRight,
+  Plus,
+  Eye,
+  EyeOff,
+  AlertTriangle,
+  X,
+  Loader2,
+  Code2,
+} from 'lucide-react';
 import { api } from '@/lib/api-client';
 import { SVGLoader } from '@/shared/ui/LoadingState';
 import JSZip from 'jszip';
@@ -66,7 +78,9 @@ export default function DeployWizardPage() {
   // Local State
   const [deploying, setDeploying] = useState(false);
   const [deployError, setDeployError] = useState('');
-  const [deployTarget, setDeployTarget] = useState<{ suffix: string; startedAt: string } | null>(null);
+  const [deployTarget, setDeployTarget] = useState<{ suffix: string; startedAt: string } | null>(
+    null,
+  );
   const [tree, setTree] = useState<TreeNode | null>(null);
   const [selectedPaths, setSelectedPaths] = useState<Set<string>>(new Set());
   const [loadingZip, setLoadingZip] = useState(true);
@@ -84,7 +98,8 @@ export default function DeployWizardPage() {
 
   useEffect(() => {
     let active = true;
-    api.listSubscriptions()
+    api
+      .listSubscriptions()
       .then(subs => {
         if (active) {
           setSubscriptions(subs || {});
@@ -103,7 +118,8 @@ export default function DeployWizardPage() {
 
   useEffect(() => {
     let active = true;
-    api.inspect()
+    api
+      .inspect()
       .then(deps => {
         if (active) {
           setDeployments(deps || []);
@@ -129,7 +145,7 @@ export default function DeployWizardPage() {
         return;
       }
       const activeCount = deployments.filter(
-        d => normalizePlan((d as Deployment & { plan?: string }).plan) === plan
+        d => normalizePlan((d as Deployment & { plan?: string }).plan) === plan,
       ).length;
       if (activeCount >= (subscriptions[plan] || 0)) {
         setSlotOccupied(true);
@@ -148,7 +164,9 @@ export default function DeployWizardPage() {
     // Guard against excessively large files that could freeze the browser
     const MAX_ZIP_BYTES = 100 * 1024 * 1024; // 100 MB
     if (file.size > MAX_ZIP_BYTES) {
-      setDeployError(`File is too large (${(file.size / 1024 / 1024).toFixed(1)} MB). Maximum allowed size is 100 MB.`);
+      setDeployError(
+        `File is too large (${(file.size / 1024 / 1024).toFixed(1)} MB). Maximum allowed size is 100 MB.`,
+      );
       setLoadingZip(false);
       return;
     }
@@ -274,9 +292,12 @@ export default function DeployWizardPage() {
     }
   };
 
-  const handleDeployReady = useCallback((deployment: { suffix: string }) => {
-    navigate(`/deployments/${deployment.suffix}`, { replace: true });
-  }, [navigate]);
+  const handleDeployReady = useCallback(
+    (deployment: { suffix: string }) => {
+      navigate(`/deployments/${deployment.suffix}`, { replace: true });
+    },
+    [navigate],
+  );
 
   const handleDeployFailed = useCallback((message: string) => {
     setDeployError(message);
@@ -303,14 +324,26 @@ export default function DeployWizardPage() {
       <div className="grow flex flex-col items-center justify-center p-6 animate-in fade-in duration-500 bg-white">
         <div className="w-full max-w-md border border-slate-200 bg-white p-8 text-center shadow-lg rounded-lg animate-in zoom-in-95 duration-200">
           <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg className="w-8 h-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            <svg
+              className="w-8 h-8 text-red-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2.5}
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+              />
             </svg>
           </div>
           <h2 className="text-xl font-bold text-slate-900 mb-2">Launchpad Slot Occupied</h2>
           <p className="text-sm text-slate-500 mb-6 leading-relaxed">
-            You have already deployed an application using the <span className="font-semibold text-slate-800">{getPlanLabel(plan)}</span>.
-            To deploy another application, please delete the existing deployment first or purchase another slot.
+            You have already deployed an application using the{' '}
+            <span className="font-semibold text-slate-800">{getPlanLabel(plan)}</span>. To deploy
+            another application, please delete the existing deployment first or purchase another
+            slot.
           </p>
           <div className="flex gap-3 justify-center">
             <button
@@ -400,13 +433,12 @@ export default function DeployWizardPage() {
                 <div className="flex flex-col gap-1">
                   {/* Root row: chevron toggles expand, checkbox selects/deselects all */}
                   <div className="flex items-center gap-1.5 py-1.5 px-2 select-none hover:bg-gray-100 rounded-md transition-colors">
-                    <div
-                      className="cursor-pointer"
-                      onClick={() => setRootExpanded(e => !e)}
-                    >
-                      {rootExpanded
-                        ? <ChevronDown size={14} className="text-gray-500" />
-                        : <ChevronRight size={14} className="text-gray-400" />}
+                    <div className="cursor-pointer" onClick={() => setRootExpanded(e => !e)}>
+                      {rootExpanded ? (
+                        <ChevronDown size={14} className="text-gray-500" />
+                      ) : (
+                        <ChevronRight size={14} className="text-gray-400" />
+                      )}
                     </div>
                     <TreeCheckbox
                       checked={
@@ -509,8 +541,12 @@ export default function DeployWizardPage() {
                   <div className="px-6 py-4 border-t border-slate-100 animate-in fade-in duration-200">
                     <div className="flex flex-col">
                       <div className="flex items-center gap-3 pb-2 border-b border-slate-200">
-                        <span className="flex-1 text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Key</span>
-                        <span className="flex-1 text-[10px] font-semibold text-slate-400 uppercase tracking-widest">Value</span>
+                        <span className="flex-1 text-[10px] font-semibold text-slate-400 uppercase tracking-widest">
+                          Key
+                        </span>
+                        <span className="flex-1 text-[10px] font-semibold text-slate-400 uppercase tracking-widest">
+                          Value
+                        </span>
                         <span className="w-12 shrink-0" />
                       </div>
 
@@ -530,7 +566,9 @@ export default function DeployWizardPage() {
                               value={row.name}
                               onChange={e => {
                                 const newRow = [...envRows];
-                                newRow[rowIdx].name = e.target.value.toUpperCase().replace(/\s+/g, '_');
+                                newRow[rowIdx].name = e.target.value
+                                  .toUpperCase()
+                                  .replace(/\s+/g, '_');
                                 setEnvRows(newRow);
                               }}
                               className="flex-1 text-[12px] text-slate-700 bg-transparent border-none outline-none placeholder:text-gray-400/70 caret-slate-500 font-mono"
@@ -553,18 +591,27 @@ export default function DeployWizardPage() {
                                 onClick={() =>
                                   setHiddenValues(prev => {
                                     const next = new Set(prev);
-                                    if (next.has(row.id)) { next.delete(row.id); } else { next.add(row.id); }
+                                    if (next.has(row.id)) {
+                                      next.delete(row.id);
+                                    } else {
+                                      next.add(row.id);
+                                    }
                                     return next;
                                   })
                                 }
-                                className={`flex items-center justify-center w-7 h-7 rounded-md border border-transparent text-slate-400 hover:text-slate-700 hover:bg-slate-100 hover:border-slate-200 transition-all ${hiddenValues.has(row.id)
+                                className={`flex items-center justify-center w-7 h-7 rounded-md border border-transparent text-slate-400 hover:text-slate-700 hover:bg-slate-100 hover:border-slate-200 transition-all ${
+                                  hiddenValues.has(row.id)
                                     ? 'opacity-100'
                                     : 'opacity-0 group-hover:opacity-100'
-                                  }`}
+                                }`}
                                 title={hiddenValues.has(row.id) ? 'Show value' : 'Hide value'}
                                 aria-label={hiddenValues.has(row.id) ? 'Show value' : 'Hide value'}
                               >
-                                {hiddenValues.has(row.id) ? <EyeOff size={13} /> : <Eye size={13} />}
+                                {hiddenValues.has(row.id) ? (
+                                  <EyeOff size={13} />
+                                ) : (
+                                  <Eye size={13} />
+                                )}
                               </button>
                               <button
                                 onClick={() => setEnvRows(envRows.filter(r => r.id !== row.id))}
@@ -587,22 +634,22 @@ export default function DeployWizardPage() {
             {/* Footer Action */}
             <div className="p-4 sm:p-6 border-t border-gray-200 bg-gray-50/80 mt-auto flex flex-col sm:flex-row justify-between items-center gap-4">
               <div className="flex-1 w-full">
-            {deployError && (
-              <div className="w-full max-w-5xl flex items-center gap-2 text-xs text-red-600 mb-4 animate-in fade-in slide-in-from-top-2 duration-300 z-20">
-                <button
-                  onClick={() => setDeployError('')}
-                  className="text-red-400 hover:text-red-600 transition-colors flex-shrink-0"
-                  aria-label="Clear error"
-                >
-                  <X size={14} />
-                </button>
-                <span className="text-gray-400">|</span>
-                <div className="flex items-center gap-2">
-                  <AlertTriangle size={14} />
-                  <span>{deployError}</span>
-                </div>
-              </div>
-            )}
+                {deployError && (
+                  <div className="w-full max-w-5xl flex items-center gap-2 text-xs text-red-600 mb-4 animate-in fade-in slide-in-from-top-2 duration-300 z-20">
+                    <button
+                      onClick={() => setDeployError('')}
+                      className="text-red-400 hover:text-red-600 transition-colors flex-shrink-0"
+                      aria-label="Clear error"
+                    >
+                      <X size={14} />
+                    </button>
+                    <span className="text-gray-400">|</span>
+                    <div className="flex items-center gap-2">
+                      <AlertTriangle size={14} />
+                      <span>{deployError}</span>
+                    </div>
+                  </div>
+                )}
               </div>
               <button
                 onClick={handleDeploy}

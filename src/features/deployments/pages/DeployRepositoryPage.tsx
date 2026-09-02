@@ -39,7 +39,9 @@ export default function DeployRepositoryPage() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const plan = normalizePlan(
-    (location.state as { plan?: string } | null)?.plan ?? searchParams.get('plan') ?? readStoredPlan(),
+    (location.state as { plan?: string } | null)?.plan ??
+      searchParams.get('plan') ??
+      readStoredPlan(),
   );
 
   const [repositoryUrl, setRepositoryUrl] = useState('');
@@ -53,7 +55,9 @@ export default function DeployRepositoryPage() {
   const [deployError, setDeployError] = useState('');
   const [envExpanded, setEnvExpanded] = useState(false);
   const [detectedLanguages, setDetectedLanguages] = useState<string>('');
-  const [deployTarget, setDeployTarget] = useState<{ suffix: string; startedAt: string } | null>(null);
+  const [deployTarget, setDeployTarget] = useState<{ suffix: string; startedAt: string } | null>(
+    null,
+  );
   // submittingLabel is set immediately on click so the progress screen renders before the API call
   const [submittingLabel, setSubmittingLabel] = useState<string | null>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -66,7 +70,8 @@ export default function DeployRepositoryPage() {
 
   useEffect(() => {
     let active = true;
-    api.listSubscriptions()
+    api
+      .listSubscriptions()
       .then(subs => {
         if (active) {
           setSubscriptions(subs || {});
@@ -85,7 +90,8 @@ export default function DeployRepositoryPage() {
 
   useEffect(() => {
     let active = true;
-    api.inspect()
+    api
+      .inspect()
       .then(deps => {
         if (active) {
           setDeployments(deps || []);
@@ -115,7 +121,7 @@ export default function DeployRepositoryPage() {
         return;
       }
       const activeCount = deployments.filter(
-        d => normalizePlan((d as Deployment & { plan?: string }).plan) === plan
+        d => normalizePlan((d as Deployment & { plan?: string }).plan) === plan,
       ).length;
       if (activeCount >= (subscriptions[plan] || 0)) {
         setSlotOccupied(true);
@@ -140,7 +146,13 @@ export default function DeployRepositoryPage() {
     }
 
     // Derive a display label from the URL immediately (no API needed)
-    const urlLabel = repositoryUrl.trim().replace(/\.git$/, '').split('/').filter(Boolean).pop() ?? 'repository';
+    const urlLabel =
+      repositoryUrl
+        .trim()
+        .replace(/\.git$/, '')
+        .split('/')
+        .filter(Boolean)
+        .pop() ?? 'repository';
     const startedAt = new Date().toISOString();
 
     // Show progress screen IMMEDIATELY, before any API calls
@@ -170,9 +182,12 @@ export default function DeployRepositoryPage() {
     }
   };
 
-  const handleDeployReady = useCallback((deployment: { suffix: string }) => {
-    navigate(`/deployments/${deployment.suffix}`, { replace: true });
-  }, [navigate]);
+  const handleDeployReady = useCallback(
+    (deployment: { suffix: string }) => {
+      navigate(`/deployments/${deployment.suffix}`, { replace: true });
+    },
+    [navigate],
+  );
 
   const handleDeployFailed = useCallback((message: string) => {
     setDeployError(message);
@@ -187,7 +202,9 @@ export default function DeployRepositoryPage() {
   });
 
   // Parse owner/repo from GitHub or GitLab URL
-  function parseRepoInfo(url: string): { provider: 'github' | 'gitlab'; owner: string; repo: string } | null {
+  function parseRepoInfo(
+    url: string,
+  ): { provider: 'github' | 'gitlab'; owner: string; repo: string } | null {
     try {
       const u = new URL(url.trim().replace(/\.git$/, ''));
       if (u.hostname === 'github.com') {
@@ -230,10 +247,11 @@ export default function DeployRepositoryPage() {
             fetch(`https://api.github.com/repos/${info.owner}/${info.repo}`),
             fetch(`https://api.github.com/repos/${info.owner}/${info.repo}/branches?per_page=100`),
           ]);
-          if (!repoRes.ok) throw new Error(repoRes.status === 404 ? 'Repository not found.' : 'GitHub API error.');
-          const repoData = await repoRes.json() as { default_branch?: string };
+          if (!repoRes.ok)
+            throw new Error(repoRes.status === 404 ? 'Repository not found.' : 'GitHub API error.');
+          const repoData = (await repoRes.json()) as { default_branch?: string };
           defaultBranch = repoData.default_branch ?? 'main';
-          const branchData = await branchRes.json() as { name: string }[];
+          const branchData = (await branchRes.json()) as { name: string }[];
           names = Array.isArray(branchData) ? branchData.map(b => b.name) : [];
         } else {
           rawUrl = `https://gitlab.com/${info.owner}/${info.repo}/-/raw`;
@@ -242,10 +260,11 @@ export default function DeployRepositoryPage() {
             fetch(`https://gitlab.com/api/v4/projects/${encoded}`),
             fetch(`https://gitlab.com/api/v4/projects/${encoded}/repository/branches?per_page=100`),
           ]);
-          if (!projRes.ok) throw new Error(projRes.status === 404 ? 'Repository not found.' : 'GitLab API error.');
-          const projData = await projRes.json() as { default_branch?: string };
+          if (!projRes.ok)
+            throw new Error(projRes.status === 404 ? 'Repository not found.' : 'GitLab API error.');
+          const projData = (await projRes.json()) as { default_branch?: string };
           defaultBranch = projData.default_branch ?? 'main';
-          const branchData = await branchRes.json() as { name: string }[];
+          const branchData = (await branchRes.json()) as { name: string }[];
           names = Array.isArray(branchData) ? branchData.map(b => b.name) : [];
         }
 
@@ -263,7 +282,7 @@ export default function DeployRepositoryPage() {
           const metacallUrl = `${rawUrl}/${defaultBranch}/metacall.json`;
           const metacallRes = await fetch(metacallUrl);
           if (metacallRes.ok) {
-            const metacallData = await metacallRes.json() as {
+            const metacallData = (await metacallRes.json()) as {
               runtime?: string | string[];
               runtimes?: string[];
               language?: string;
@@ -276,7 +295,9 @@ export default function DeployRepositoryPage() {
             if (metacallData.runtimes && Array.isArray(metacallData.runtimes)) {
               langs = metacallData.runtimes;
             } else if (metacallData.runtime) {
-              langs = Array.isArray(metacallData.runtime) ? metacallData.runtime : [metacallData.runtime];
+              langs = Array.isArray(metacallData.runtime)
+                ? metacallData.runtime
+                : [metacallData.runtime];
             } else if (metacallData.languages && Array.isArray(metacallData.languages)) {
               langs = metacallData.languages;
             } else if (metacallData.language) {
@@ -287,13 +308,23 @@ export default function DeployRepositoryPage() {
             if (langs.length > 0) {
               const normalizedLangs = langs.map(l => {
                 const normalized = l.toLowerCase().trim();
-                if (normalized.includes('node') || normalized.includes('javascript') || normalized.includes('js')) return 'Node.js';
+                if (
+                  normalized.includes('node') ||
+                  normalized.includes('javascript') ||
+                  normalized.includes('js')
+                )
+                  return 'Node.js';
                 if (normalized.includes('python') || normalized.includes('py')) return 'Python';
                 if (normalized.includes('ruby') || normalized.includes('rb')) return 'Ruby';
                 if (normalized.includes('go') || normalized.includes('golang')) return 'Go';
                 if (normalized.includes('rust')) return 'Rust';
                 if (normalized.includes('java')) return 'Java';
-                if (normalized.includes('dotnet') || normalized.includes('csharp') || normalized.includes('c#')) return 'C#';
+                if (
+                  normalized.includes('dotnet') ||
+                  normalized.includes('csharp') ||
+                  normalized.includes('c#')
+                )
+                  return 'C#';
                 return l;
               });
               setDetectedLanguages(normalizedLangs.join(' + '));
@@ -309,7 +340,9 @@ export default function DeployRepositoryPage() {
       }
     }, 700);
 
-    return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
   }, [repositoryUrl]);
 
   // Show slot occupied warning page
@@ -318,14 +351,26 @@ export default function DeployRepositoryPage() {
       <div className="grow flex flex-col items-center justify-center p-6 animate-in fade-in duration-500 bg-white">
         <div className="w-full max-w-md border border-slate-200 bg-white p-8 text-center shadow-lg rounded-lg animate-in zoom-in-95 duration-200">
           <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg className="w-8 h-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            <svg
+              className="w-8 h-8 text-red-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2.5}
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+              />
             </svg>
           </div>
           <h2 className="text-xl font-bold text-slate-900 mb-2">Launchpad Slot Occupied</h2>
           <p className="text-sm text-slate-500 mb-6 leading-relaxed">
-            You have already deployed an application using the <span className="font-semibold text-slate-800">{getPlanLabel(plan)}</span>.
-            To deploy another application, please delete the existing deployment first or purchase another slot.
+            You have already deployed an application using the{' '}
+            <span className="font-semibold text-slate-800">{getPlanLabel(plan)}</span>. To deploy
+            another application, please delete the existing deployment first or purchase another
+            slot.
           </p>
           <div className="flex gap-3 justify-center">
             <button
@@ -368,7 +413,6 @@ export default function DeployRepositoryPage() {
   return (
     <div className="grow flex flex-col items-center justify-start p-4 sm:p-8 pt-6 animate-in fade-in duration-500">
       <div className="w-full max-w-4xl flex flex-col gap-6">
-
         {/* Page Header */}
         <div className="flex items-start gap-3">
           <button
@@ -390,7 +434,10 @@ export default function DeployRepositoryPage() {
                 Import a Git repository and deploy it as a FaaS function
               </p>
               <p className="mt-1 text-[11px] font-semibold text-slate-500">
-                Active plan: <span className={plan ? 'text-blue-600' : 'text-red-500'}>{plan ? getPlanLabel(plan) : 'No plan selected'}</span>
+                Active plan:{' '}
+                <span className={plan ? 'text-blue-600' : 'text-red-500'}>
+                  {plan ? getPlanLabel(plan) : 'No plan selected'}
+                </span>
               </p>
             </div>
           </div>
@@ -445,20 +492,32 @@ export default function DeployRepositoryPage() {
 
                 {branches.length > 0 ? (
                   <div className="relative flex items-center border border-slate-200 rounded-lg focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/10 transition-all">
-                    <GitBranch size={16} className="absolute left-4 text-slate-400 pointer-events-none" strokeWidth={1.5} />
+                    <GitBranch
+                      size={16}
+                      className="absolute left-4 text-slate-400 pointer-events-none"
+                      strokeWidth={1.5}
+                    />
                     <select
                       value={branchName}
                       onChange={e => setBranchName(e.target.value)}
                       className="w-full pl-12 pr-10 py-3 bg-transparent text-sm text-slate-800 outline-none appearance-none cursor-pointer"
                     >
                       {branches.map(b => (
-                        <option key={b} value={b}>{b}</option>
+                        <option key={b} value={b}>
+                          {b}
+                        </option>
                       ))}
                     </select>
-                    <ChevronDown size={16} className="absolute right-3 text-slate-400 pointer-events-none" strokeWidth={1.5} />
+                    <ChevronDown
+                      size={16}
+                      className="absolute right-3 text-slate-400 pointer-events-none"
+                      strokeWidth={1.5}
+                    />
                   </div>
                 ) : (
-                  <div className={`flex items-center gap-3 border rounded-lg px-4 py-3 transition-all ${branchFetchError ? 'border-amber-300' : 'border-slate-200'}`}>
+                  <div
+                    className={`flex items-center gap-3 border rounded-lg px-4 py-3 transition-all ${branchFetchError ? 'border-amber-300' : 'border-slate-200'}`}
+                  >
                     <GitBranch size={16} className="text-slate-400 shrink-0" strokeWidth={1.5} />
                     <input
                       type="text"
@@ -489,16 +548,28 @@ export default function DeployRepositoryPage() {
             <div className="md:col-span-1 flex flex-col gap-4">
               <div className="bg-blue-50 border border-blue-200/50 rounded-lg p-4 text-xs leading-relaxed text-blue-900">
                 <p className="font-semibold mb-2">Requirement</p>
-                <p>Your repository must include a <code className="bg-blue-100 px-1.5 py-0.5 rounded font-mono text-[11px]">metacall.json</code> at the root.</p>
+                <p>
+                  Your repository must include a{' '}
+                  <code className="bg-blue-100 px-1.5 py-0.5 rounded font-mono text-[11px]">
+                    metacall.json
+                  </code>{' '}
+                  at the root.
+                </p>
               </div>
 
               <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-                <h3 className="text-xs font-bold text-slate-700 uppercase tracking-widest mb-3">Framework Details</h3>
+                <h3 className="text-xs font-bold text-slate-700 uppercase tracking-widest mb-3">
+                  Framework Details
+                </h3>
                 <div className="space-y-2 text-xs">
                   <div className="flex justify-between">
                     <span className="text-slate-600">Languages</span>
                     <span className="font-semibold text-gray-600">
-                      {detectedLanguages ? detectedLanguages : (branchLoading ? 'Detecting…' : 'Not detected')}
+                      {detectedLanguages
+                        ? detectedLanguages
+                        : branchLoading
+                          ? 'Detecting…'
+                          : 'Not detected'}
                     </span>
                   </div>
                   <div className="flex justify-between">
@@ -524,7 +595,7 @@ export default function DeployRepositoryPage() {
             <div className="flex items-center gap-2">
               {envExpanded && (
                 <button
-                  onClick={(e) => {
+                  onClick={e => {
                     e.stopPropagation();
                     const newId = envRows.length > 0 ? Math.max(...envRows.map(r => r.id)) + 1 : 1;
                     setEnvRows([...envRows, { id: newId, name: '', value: '' }]);
@@ -550,15 +621,24 @@ export default function DeployRepositoryPage() {
               {envRows.length > 0 && (
                 <div className="mb-4">
                   <div className="hidden sm:grid grid-cols-[1fr_1fr_80px] gap-4 pb-3 mb-2 border-b border-slate-100">
-                    <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">Key</span>
-                    <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">Value</span>
+                    <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">
+                      Key
+                    </span>
+                    <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">
+                      Value
+                    </span>
                     <span />
                   </div>
 
                   {envRows.map((row, idx) => (
-                    <div key={row.id} className="flex flex-col sm:grid sm:grid-cols-[1fr_1fr_80px] gap-3 sm:items-center py-3 border-b border-slate-100 last:border-b-0 group">
+                    <div
+                      key={row.id}
+                      className="flex flex-col sm:grid sm:grid-cols-[1fr_1fr_80px] gap-3 sm:items-center py-3 border-b border-slate-100 last:border-b-0 group"
+                    >
                       <div className="flex flex-col sm:contents gap-2">
-                        <span className="text-[10px] font-bold text-slate-500 uppercase sm:hidden">Key</span>
+                        <span className="text-[10px] font-bold text-slate-500 uppercase sm:hidden">
+                          Key
+                        </span>
                         <input
                           placeholder="VAR_NAME"
                           value={row.name}
@@ -575,7 +655,9 @@ export default function DeployRepositoryPage() {
                       </div>
 
                       <div className="flex flex-col sm:contents gap-2">
-                        <span className="text-[10px] font-bold text-slate-500 uppercase sm:hidden">Value</span>
+                        <span className="text-[10px] font-bold text-slate-500 uppercase sm:hidden">
+                          Value
+                        </span>
                         <input
                           placeholder="value"
                           value={row.value}
@@ -619,7 +701,6 @@ export default function DeployRepositoryPage() {
               )}
             </div>
           )}
-          
         </div>
         {/* Error Banner */}
         {deployError && (
@@ -641,7 +722,13 @@ export default function DeployRepositoryPage() {
             onClick={handleDeploy}
             disabled={deploying || !repositoryUrl.trim() || !plan}
             className="flex items-center justify-center gap-2 px-8 py-2.5  text-black border text-sm font-bold hover:bg-gray-600 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
-            title={!plan ? 'Select a plan first to deploy' : !repositoryUrl.trim() ? 'Enter repository URL to deploy' : ''}
+            title={
+              !plan
+                ? 'Select a plan first to deploy'
+                : !repositoryUrl.trim()
+                  ? 'Enter repository URL to deploy'
+                  : ''
+            }
           >
             {deploying && <Spinner size={14} />}
             {deploying ? 'Deploying…' : 'Deploy Repository'}

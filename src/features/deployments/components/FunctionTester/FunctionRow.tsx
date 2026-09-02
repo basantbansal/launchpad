@@ -44,8 +44,7 @@ export function FunctionRow({
       let parsedArgs: unknown[] = [];
       if (argsInput.trim() && argsInput.trim() !== '[]') {
         parsedArgs = JSON.parse(argsInput);
-        if (!Array.isArray(parsedArgs))
-          throw new Error('Arguments must be a valid JSON array.');
+        if (!Array.isArray(parsedArgs)) throw new Error('Arguments must be a valid JSON array.');
       }
       const res = await api.call(prefix, suffix, version, func.name, parsedArgs);
       setResult(JSON.stringify(res, null, 2));
@@ -68,9 +67,7 @@ export function FunctionRow({
         {/* diamond */}
         <span
           className={`shrink-0 transition-colors ${
-            isOpen
-              ? 'text-amber-500'
-              : 'text-emerald-500 group-hover:text-emerald-600'
+            isOpen ? 'text-amber-500' : 'text-emerald-500 group-hover:text-emerald-600'
           }`}
         >
           <svg viewBox="0 0 16 16" fill="currentColor" className="w-3 h-3">
@@ -82,9 +79,7 @@ export function FunctionRow({
         <span className="flex-1 font-mono text-[13px] font-medium truncate">
           <span
             className={
-              isOpen
-                ? 'font-bold text-amber-700'
-                : 'text-slate-700 group-hover:text-slate-900'
+              isOpen ? 'font-bold text-amber-700' : 'text-slate-700 group-hover:text-slate-900'
             }
           >
             {func.name}
@@ -146,9 +141,7 @@ export function FunctionRow({
               value={argsInput}
               onChange={e => setArgsInput(e.target.value)}
               placeholder={
-                func.args.length > 0
-                  ? `e.g. [${func.args.map(() => '...').join(', ')}]`
-                  : '[]'
+                func.args.length > 0 ? `e.g. [${func.args.map(() => '...').join(', ')}]` : '[]'
               }
               rows={Math.max(3, func.args.length + 1)}
               className="bg-white border border-gray-200 px-3 py-2 font-mono text-xs text-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-shadow resize-y"
@@ -159,7 +152,9 @@ export function FunctionRow({
           {/* Execute */}
           <div className="flex justify-end">
             <button
-              onClick={() => { void handleRun(); }}
+              onClick={() => {
+                void handleRun();
+              }}
               disabled={loading}
               className="flex items-center gap-2 px-5 py-2 bg-gray-500 text-white text-xs font-bold hover:bg-gray-600 transition-colors disabled:opacity-50"
             >

@@ -67,9 +67,6 @@ const PdfIcon = ({ className = '', size = 16 }: PdfIconProps) => (
   </svg>
 );
 
-
-
-
 export default function SettingsPage() {
   const navigate = useNavigate();
   const [email] = useState(() => localStorage.getItem(LS_EMAIL_KEY) ?? 'example@gmail.com');
@@ -77,11 +74,10 @@ export default function SettingsPage() {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [feedbackMessage, setFeedbackMessage] = useState<
-    { type: 'success' | 'error'; text: string } | null
-  >(
-    null,
-  );
+  const [feedbackMessage, setFeedbackMessage] = useState<{
+    type: 'success' | 'error';
+    text: string;
+  } | null>(null);
 
   const [deployments, setDeployments] = useState<Deployment[]>([]);
   const [subDeploys, setSubDeploys] = useState<SubscriptionDeploy[]>([]);
@@ -381,10 +377,7 @@ export default function SettingsPage() {
                 <Key size={14} className="text-slate-600" />
                 Security
               </div>
-              <form
-                onSubmit={handlePasswordUpdate}
-                className="p-6 grow flex flex-col gap-5"
-              >
+              <form onSubmit={handlePasswordUpdate} className="p-6 grow flex flex-col gap-5">
                 <p className="text-[12px] text-gray-600 mb-2 leading-relaxed">
                   Ensure your account is using a long, random password to stay secure.
                 </p>
@@ -490,9 +483,14 @@ export default function SettingsPage() {
                           className="py-3 px-4 font-mono flex items-center gap-2 text-slate-600 hover:text-blue-600 cursor-pointer group/receipt select-none"
                           title="Download PDF Invoice"
                         >
-                          <PdfIcon className="text-slate-600" size={16}  />
-                          <span className="group-hover/receipt:underline truncate max-w-40 sm:max-w-none">{formatInvoiceNumber(row.id)}</span>
-                          <Download size={12} className="text-slate-400 opacity-0 group-hover/receipt:opacity-100 transition-opacity ml-1" />
+                          <PdfIcon className="text-slate-600" size={16} />
+                          <span className="group-hover/receipt:underline truncate max-w-40 sm:max-w-none">
+                            {formatInvoiceNumber(row.id)}
+                          </span>
+                          <Download
+                            size={12}
+                            className="text-slate-400 opacity-0 group-hover/receipt:opacity-100 transition-opacity ml-1"
+                          />
                         </td>
                         <td className="py-3 px-4">
                           <span className="inline-flex items-center px-2 py-0.5 rounded-sm text-[9px] font-bold bg-emerald-50 text-gray-700 border border-emerald-200 uppercase tracking-wide">
@@ -500,12 +498,17 @@ export default function SettingsPage() {
                           </span>
                         </td>
                         <td className="py-3 px-4 text-gray-500 font-medium">{row.date}</td>
-                        <td className="py-3 px-4 text-right font-bold text-slate-800">{row.amount}</td>
+                        <td className="py-3 px-4 text-right font-bold text-slate-800">
+                          {row.amount}
+                        </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={4} className="py-8 text-center text-gray-500 font-medium bg-slate-50/50">
+                      <td
+                        colSpan={4}
+                        className="py-8 text-center text-gray-500 font-medium bg-slate-50/50"
+                      >
                         No invoices generated yet.
                       </td>
                     </tr>
@@ -592,7 +595,11 @@ export default function SettingsPage() {
                     activePaidSubscriptionsList.map(item => {
                       const associatedDeploy = item.deploy
                         ? { suffix: item.deploy }
-                        : deployments.find(d => normalizePlan((d as Deployment & { plan?: string }).plan) === item.planName);
+                        : deployments.find(
+                            d =>
+                              normalizePlan((d as Deployment & { plan?: string }).plan) ===
+                              item.planName,
+                          );
                       const deployText = associatedDeploy ? (
                         <span
                           className="font-semibold text-blue-600 underline hover:text-blue-800 cursor-pointer"
@@ -605,14 +612,21 @@ export default function SettingsPage() {
                       );
 
                       return (
-                        <tr key={item.id} className="hover:bg-slate-50/50 transition-all duration-150">
+                        <tr
+                          key={item.id}
+                          className="hover:bg-slate-50/50 transition-all duration-150"
+                        >
                           <td className="py-3 px-4">
-                            <span className={`inline-flex items-center px-2 py-0.5 rounded-sm text-[9px] font-bold uppercase tracking-wider border ${item.badgeColor}`}>
+                            <span
+                              className={`inline-flex items-center px-2 py-0.5 rounded-sm text-[9px] font-bold uppercase tracking-wider border ${item.badgeColor}`}
+                            >
                               {item.planName}
                             </span>
                           </td>
                           <td className="py-3 px-4 text-gray-500 font-medium">{deployText}</td>
-                          <td className="py-3 px-4 text-gray-400 font-medium font-mono">{item.mockDate}</td>
+                          <td className="py-3 px-4 text-gray-400 font-medium font-mono">
+                            {item.mockDate}
+                          </td>
                           <td className="py-3 px-4 text-center">
                             <button
                               onClick={() => handleCancelSubscription(item.planName)}
@@ -627,8 +641,12 @@ export default function SettingsPage() {
                     })
                   ) : (
                     <tr>
-                      <td colSpan={4} className="py-8 text-center text-gray-500 font-medium bg-slate-50/50">
-                        No active paid subscriptions. You are currently on the <strong className="text-slate-800">Free Tier</strong>.
+                      <td
+                        colSpan={4}
+                        className="py-8 text-center text-gray-500 font-medium bg-slate-50/50"
+                      >
+                        No active paid subscriptions. You are currently on the{' '}
+                        <strong className="text-slate-800">Free Tier</strong>.
                       </td>
                     </tr>
                   )}

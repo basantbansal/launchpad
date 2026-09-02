@@ -11,7 +11,10 @@ interface UseLogsResult {
 
 function stripAnsi(value: string): string {
   const esc = String.fromCharCode(27);
-  return value.split(esc).join('').replace(/\[[0-9;]*m/g, '');
+  return value
+    .split(esc)
+    .join('')
+    .replace(/\[[0-9;]*m/g, '');
 }
 
 /**
@@ -32,9 +35,7 @@ function parseLogs(raw: string): LogEntry[] {
       /^(\S+)\s+\[(INFO|WARN|ERROR|DEBUG|HTTP)\]\s+-\s+([^|]+)\|\s?(.*)$/i,
     );
 
-    const legacyFmt = !newFmt
-      ? clean.match(/^(\S+)\s+-\s+([^|]+)\|\s?(.*)$/)
-      : null;
+    const legacyFmt = !newFmt ? clean.match(/^(\S+)\s+-\s+([^|]+)\|\s?(.*)$/) : null;
 
     if (newFmt) {
       const [, ts, rawLevel, name, msg] = newFmt;
@@ -119,9 +120,10 @@ export function useLogs(suffix: string, prefix: string, pollIntervalMs = 5000): 
         if (isAbortError(err)) return;
         if (controller.signal.aborted) return;
         // Surface error to the caller and widen retry interval
-        const msg = isApiError(err) || err instanceof Error
-          ? (err.message ?? 'Failed to load logs.')
-          : 'Failed to load logs.';
+        const msg =
+          isApiError(err) || err instanceof Error
+            ? (err.message ?? 'Failed to load logs.')
+            : 'Failed to load logs.';
         setError(msg);
         scheduleNext(true);
       } finally {
@@ -165,4 +167,3 @@ export function useLogs(suffix: string, prefix: string, pollIntervalMs = 5000): 
     },
   };
 }
-

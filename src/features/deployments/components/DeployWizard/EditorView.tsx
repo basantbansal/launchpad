@@ -4,10 +4,14 @@ import { type McConfig, buildJson } from './metacallConfig';
 
 // Language detection
 const EXT_MAP: Record<string, string> = {
-  js: 'node', mjs: 'node', cjs: 'node',
+  js: 'node',
+  mjs: 'node',
+  cjs: 'node',
   ts: 'ts',
-  py: 'py', pyw: 'py',
-  rb: 'rb', rake: 'rb',
+  py: 'py',
+  pyw: 'py',
+  rb: 'rb',
+  rake: 'rb',
   lua: 'lua',
   cs: 'cs',
   r: 'rscript',
@@ -29,7 +33,6 @@ function detectLang(file: string): string {
   const ext = file.split('.').pop()?.toLowerCase() ?? '';
   return EXT_MAP[ext] ?? 'node';
 }
-
 
 // Component
 export function EditorView({
@@ -97,7 +100,6 @@ export function EditorView({
 
   return (
     <div className="flex flex-col border border-gray-200 mt-2 bg-white grow h-full max-h-100">
-
       {/* Tab bar */}
       <div className="flex items-stretch border-b border-gray-200 bg-gray-50/50 overflow-x-auto">
         {/* Auto tabs from detected file language, label = language name only */}
@@ -115,7 +117,9 @@ export function EditorView({
                     : 'text-gray-500 hover:bg-gray-100 hover:text-gray-700'
                 }`}
               >
-                <span className="font-semibold">{LANG_LABEL[cfg.languageId] ?? cfg.languageId}</span>
+                <span className="font-semibold">
+                  {LANG_LABEL[cfg.languageId] ?? cfg.languageId}
+                </span>
                 {cfg.files.length > 0 && (
                   <span className="text-[10px] text-gray-400 tabular-nums">{cfg.files.length}</span>
                 )}
@@ -139,7 +143,9 @@ export function EditorView({
                 }`}
               >
                 <span className="text-[10px] font-bold opacity-50 tabular-nums">MC-{mcI}</span>
-                <span className="font-semibold">{LANG_LABEL[cfg.languageId] ?? cfg.languageId}</span>
+                <span className="font-semibold">
+                  {LANG_LABEL[cfg.languageId] ?? cfg.languageId}
+                </span>
               </button>
             );
           })}
@@ -184,13 +190,13 @@ export function EditorView({
         <div className="ml-auto flex items-center gap-2">
           <select
             value={current.languageId}
-            onChange={e =>
-              setLangOverrides(prev => ({ ...prev, [current.key]: e.target.value }))
-            }
+            onChange={e => setLangOverrides(prev => ({ ...prev, [current.key]: e.target.value }))}
             className="text-[11px] border border-gray-200 rounded px-1.5 py-0.5 bg-white text-gray-600 font-mono outline-none cursor-pointer hover:border-blue-400 transition-colors"
           >
             {Object.entries(LANG_LABEL).map(([id, label]) => (
-              <option key={id} value={id}>{label}</option>
+              <option key={id} value={id}>
+                {label}
+              </option>
             ))}
           </select>
           <span className="text-gray-400">
@@ -252,10 +258,12 @@ export function EditorView({
                   {parts.length > 0 ? (
                     parts.map((part, j) =>
                       part.color ? (
-                        <span key={j} className={part.color}>{part.text}</span>
+                        <span key={j} className={part.color}>
+                          {part.text}
+                        </span>
                       ) : (
                         <span key={j}>{part.text}</span>
-                      )
+                      ),
                     )
                   ) : (
                     <span>{line || ' '}</span>

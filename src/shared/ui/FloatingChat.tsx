@@ -18,11 +18,7 @@ export function FloatingChat() {
             {/* Subtle background glow */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/20 blur-2xl rounded-full translate-x-10 -translate-y-10"></div>
             <div className="flex items-center gap-2 relative z-10">
-              <img
-                src="/logo.svg"
-                alt="MetaCall Support"
-                className="w-8 h-8 object-contain"
-              />
+              <img src="/logo.svg" alt="MetaCall Support" className="w-8 h-8 object-contain" />
               <span className="font-bold tracking-wide text-[13px] uppercase">
                 MetaCall Team Support
               </span>
@@ -49,7 +45,7 @@ export function FloatingChat() {
         }`}
         aria-label="Toggle Chat"
       >
-        {isOpen ? <X size={24} /> :  <MessageSquare size={24} />}
+        {isOpen ? <X size={24} /> : <MessageSquare size={24} />}
       </button>
     </div>
   );

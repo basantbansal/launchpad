@@ -105,7 +105,12 @@ export function LogsViewer({ logs, className, error }: LogsViewerProps) {
   // Empty state
   if (logs.length === 0) {
     return (
-      <div className={clsx('flex flex-col items-center justify-center gap-3 bg-slate-950 text-gray-300 h-full w-full', className)}>
+      <div
+        className={clsx(
+          'flex flex-col items-center justify-center gap-3 bg-slate-950 text-gray-300 h-full w-full',
+          className,
+        )}
+      >
         {error && !dismissedError ? (
           <>
             <div className="flex items-center gap-2 px-4 py-2.5 bg-red-950/40 border border-red-800/40 rounded font-mono text-sm text-red-400">
@@ -117,7 +122,9 @@ export function LogsViewer({ logs, className, error }: LogsViewerProps) {
                 <X size={14} />
               </button>
               <span className="text-gray-500">|</span>
-              <span className="font-bold uppercase tracking-wider text-[9px] border border-red-700 px-1.5 py-0.5 rounded">ERR</span>
+              <span className="font-bold uppercase tracking-wider text-[9px] border border-red-700 px-1.5 py-0.5 rounded">
+                ERR
+              </span>
               <span>{error}</span>
             </div>
             <div className="text-[10px] uppercase font-bold tracking-widest opacity-40">
@@ -141,10 +148,8 @@ export function LogsViewer({ logs, className, error }: LogsViewerProps) {
 
   return (
     <div className={clsx('flex flex-col bg-slate-800 w-full h-full rounded', className)}>
-
       {/* Toolbar */}
       <div className="shrink-0 flex items-center gap-2 px-3 py-1.5 bg-slate-900 border-b border-slate-700">
-
         <div className="w-px h-3.5 bg-slate-800 mx-1 shrink-0" />
 
         {/* Level filter chips */}
@@ -163,7 +168,7 @@ export function LogsViewer({ logs, className, error }: LogsViewerProps) {
           {ALL_LEVELS.filter(l => counts[l]).map(l => (
             <button
               key={l}
-              onClick={() => setLevelFilter(prev => prev === l ? 'all' : l)}
+              onClick={() => setLevelFilter(prev => (prev === l ? 'all' : l))}
               className={clsx(
                 'shrink-0 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider border rounded transition-colors',
                 levelFilter === l
@@ -210,7 +215,10 @@ export function LogsViewer({ logs, className, error }: LogsViewerProps) {
         {visible.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full gap-2 text-slate-600 font-mono text-[12px]">
             <span>No logs match the selected filter.</span>
-            <button onClick={() => setLevelFilter('all')} className="text-[10px] text-slate-500 hover:text-slate-300 underline underline-offset-2 transition-colors">
+            <button
+              onClick={() => setLevelFilter('all')}
+              className="text-[10px] text-slate-500 hover:text-slate-300 underline underline-offset-2 transition-colors"
+            >
               Show all logs
             </button>
           </div>
@@ -223,7 +231,7 @@ export function LogsViewer({ logs, className, error }: LogsViewerProps) {
                   key={i}
                   className={clsx(
                     'group flex items-start gap-0 transition-colors hover:bg-slate-700/60',
-                    'bg-transparent'
+                    'bg-transparent',
                   )}
                   style={{
                     contentVisibility: 'auto',
@@ -239,14 +247,21 @@ export function LogsViewer({ logs, className, error }: LogsViewerProps) {
                     {entry.timestamp || '—'}
                   </span>
                   {/* Level badge */}
-                  <span className={clsx('shrink-0 w-12 mr-2 px-1 border text-center text-[10px] font-bold uppercase tracking-wider leading-[1.4] rounded mt-[3px]', badge.cls)}>
+                  <span
+                    className={clsx(
+                      'shrink-0 w-12 mr-2 px-1 border text-center text-[10px] font-bold uppercase tracking-wider leading-[1.4] rounded mt-[3px]',
+                      badge.cls,
+                    )}
+                  >
                     {badge.label}
                   </span>
                   {/* Message */}
-                  <span className={clsx('flex-1 leading-6 pr-3', badge.textCls, {
-                    'break-all whitespace-pre-wrap': wrap,
-                    'truncate': !wrap,
-                  })}>
+                  <span
+                    className={clsx('flex-1 leading-6 pr-3', badge.textCls, {
+                      'break-all whitespace-pre-wrap': wrap,
+                      truncate: !wrap,
+                    })}
+                  >
                     {entry.message}
                   </span>
                 </div>
@@ -277,10 +292,14 @@ export function LogsViewer({ logs, className, error }: LogsViewerProps) {
         </span>
         <div className="w-px h-3 bg-slate-800" />
         {(counts['error'] ?? 0) > 0 && (
-          <span className="text-red-400 font-bold">{counts['error']} error{counts['error'] !== 1 ? 's' : ''}</span>
+          <span className="text-red-400 font-bold">
+            {counts['error']} error{counts['error'] !== 1 ? 's' : ''}
+          </span>
         )}
         {(counts['warn'] ?? 0) > 0 && (
-          <span className="text-amber-400 font-bold">{counts['warn']} warning{counts['warn'] !== 1 ? 's' : ''}</span>
+          <span className="text-amber-400 font-bold">
+            {counts['warn']} warning{counts['warn'] !== 1 ? 's' : ''}
+          </span>
         )}
         {(counts['error'] ?? 0) === 0 && (counts['warn'] ?? 0) === 0 && (
           <span className="text-emerald-500/70">Clean</span>
