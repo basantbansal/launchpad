@@ -128,7 +128,9 @@ describe('api-client', () => {
   describe('login', () => {
     it('sends captchaToken in payload when provided', async () => {
       const api = await loadApi();
-      mockFetch.mockResolvedValueOnce(makeResponse(200, JSON.stringify({ token: 'jwt-token' }), 'text/plain'));
+      mockFetch.mockResolvedValueOnce(
+        makeResponse(200, JSON.stringify({ token: 'jwt-token' }), 'text/plain'),
+      );
 
       await api.login('test@example.com', 'password', 'valid-token');
 
@@ -144,7 +146,9 @@ describe('api-client', () => {
 
     it('sends "empty" for captchaToken when omitted', async () => {
       const api = await loadApi();
-      mockFetch.mockResolvedValueOnce(makeResponse(200, JSON.stringify({ token: 'jwt-token' }), 'text/plain'));
+      mockFetch.mockResolvedValueOnce(
+        makeResponse(200, JSON.stringify({ token: 'jwt-token' }), 'text/plain'),
+      );
 
       await api.login('test@example.com', 'password');
 
@@ -162,7 +166,9 @@ describe('api-client', () => {
   describe('signup', () => {
     it('sends captchaToken in payload when provided', async () => {
       const api = await loadApi();
-      mockFetch.mockResolvedValueOnce(makeResponse(200, JSON.stringify({ token: 'jwt-token' }), 'text/plain'));
+      mockFetch.mockResolvedValueOnce(
+        makeResponse(200, JSON.stringify({ token: 'jwt-token' }), 'text/plain'),
+      );
 
       await api.signup('test@example.com', 'password', 'testuser', 'valid-token');
 
@@ -179,7 +185,9 @@ describe('api-client', () => {
 
     it('sends "empty" for captchaToken when omitted', async () => {
       const api = await loadApi();
-      mockFetch.mockResolvedValueOnce(makeResponse(200, JSON.stringify({ token: 'jwt-token' }), 'text/plain'));
+      mockFetch.mockResolvedValueOnce(
+        makeResponse(200, JSON.stringify({ token: 'jwt-token' }), 'text/plain'),
+      );
 
       await api.signup('test@example.com', 'password', 'testuser');
 

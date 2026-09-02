@@ -214,12 +214,9 @@ export default function SignupPage() {
           )}
 
           {siteKey && (
-              <div className="flex justify-center pt-4">
-                  <Turnstile 
-                      siteKey={siteKey} 
-                      onSuccess={(token) => setCaptchaToken(token)} 
-                  />
-              </div>
+            <div className="flex justify-center pt-4">
+              <Turnstile siteKey={siteKey} onSuccess={token => setCaptchaToken(token)} />
+            </div>
           )}
 
           <div className="flex justify-end pt-4">

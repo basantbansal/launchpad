@@ -61,7 +61,12 @@ describe('useAuth / AuthProvider', () => {
       await result.current.signup('new@example.com', 'secret', 'new-user');
     });
 
-    expect(mockedApi.signup).toHaveBeenCalledWith('new@example.com', 'secret', 'new-user', undefined);
+    expect(mockedApi.signup).toHaveBeenCalledWith(
+      'new@example.com',
+      'secret',
+      'new-user',
+      undefined,
+    );
     expect(localStorage.getItem('faas_token')).toBe('token-signup');
     expect(localStorage.getItem('faas_user_email')).toBe('new@example.com');
     expect(result.current.user).toEqual({ email: 'new@example.com' });

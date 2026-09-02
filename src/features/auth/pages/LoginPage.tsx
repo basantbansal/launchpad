@@ -120,12 +120,9 @@ export default function LoginPage() {
             )}
 
             {siteKey && (
-                <div className="mt-8 flex justify-center">
-                    <Turnstile 
-                        siteKey={siteKey} 
-                        onSuccess={(token) => setCaptchaToken(token)} 
-                    />
-                </div>
+              <div className="mt-8 flex justify-center">
+                <Turnstile siteKey={siteKey} onSuccess={token => setCaptchaToken(token)} />
+              </div>
             )}
 
             <div className="mt-8 flex justify-end">

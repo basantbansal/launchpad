@@ -36,12 +36,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser({ email });
   }, []);
 
-  const signup = useCallback(async (email: string, password: string, alias: string, captchaToken?: string) => {
-    const token = await api.signup(email, password, alias, captchaToken);
-    localStorage.setItem(TOKEN_KEY, token);
-    localStorage.setItem(EMAIL_KEY, email);
-    setUser({ email });
-  }, []);
+  const signup = useCallback(
+    async (email: string, password: string, alias: string, captchaToken?: string) => {
+      const token = await api.signup(email, password, alias, captchaToken);
+      localStorage.setItem(TOKEN_KEY, token);
+      localStorage.setItem(EMAIL_KEY, email);
+      setUser({ email });
+    },
+    [],
+  );
 
   const logout = useCallback(() => {
     localStorage.removeItem(TOKEN_KEY);

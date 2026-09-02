@@ -414,7 +414,12 @@ export const api = {
     }
   },
 
-  signup: async (email: string, password: string, alias: string, captchaToken?: string): Promise<string> => {
+  signup: async (
+    email: string,
+    password: string,
+    alias: string,
+    captchaToken?: string,
+  ): Promise<string> => {
     try {
       const res = await authFetch(`${BASE_URL}/signup`, {
         method: 'POST',
@@ -424,7 +429,12 @@ export const api = {
           Origin: BASE_URL,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password, alias, 'g-recaptcha-response': captchaToken || 'empty' }),
+        body: JSON.stringify({
+          email,
+          password,
+          alias,
+          'g-recaptcha-response': captchaToken || 'empty',
+        }),
       });
 
       if (!res.ok) {

@@ -13,7 +13,7 @@ vi.mock('@marsidev/react-turnstile', () => ({
         </button>
       </div>
     );
-  }
+  },
 }));
 
 const mockSignup = vi.fn();
@@ -21,9 +21,9 @@ vi.mock('@/features/auth/hooks/useAuth', () => ({
   useAuth: () => ({
     signup: mockSignup,
     user: null,
-    loading: false
+    loading: false,
   }),
-  AuthProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>
+  AuthProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
 describe('SignupPage Component', () => {
@@ -31,15 +31,16 @@ describe('SignupPage Component', () => {
     vi.clearAllMocks();
   });
 
-  const renderWithRouter = () => render(
-    <MemoryRouter>
-      <SignupPage />
-    </MemoryRouter>
-  );
+  const renderWithRouter = () =>
+    render(
+      <MemoryRouter>
+        <SignupPage />
+      </MemoryRouter>,
+    );
 
   it('renders required input fields', () => {
     renderWithRouter();
-    
+
     expect(screen.getByLabelText('Email')).toBeInTheDocument();
     expect(screen.getByLabelText('Alias')).toBeInTheDocument();
     expect(screen.getByLabelText('Password')).toBeInTheDocument();
@@ -50,7 +51,7 @@ describe('SignupPage Component', () => {
 
   it('submits the form with email, password, alias and empty captcha when no site key is present', async () => {
     vi.stubEnv('VITE_TURNSTILE_SITE_KEY', '');
-    
+
     renderWithRouter();
 
     const emailInput = screen.getByLabelText('Email');
@@ -76,7 +77,7 @@ describe('SignupPage Component', () => {
 
   it('renders Turnstile widget and submits the token when site key is present', async () => {
     vi.stubEnv('VITE_TURNSTILE_SITE_KEY', 'mock-site-key');
-    
+
     renderWithRouter();
 
     expect(screen.getByTestId('turnstile-widget')).toBeInTheDocument();
@@ -102,7 +103,12 @@ describe('SignupPage Component', () => {
     fireEvent.click(submitBtn);
 
     await waitFor(() => {
-      expect(mockSignup).toHaveBeenCalledWith('secure@example.com', 'password123', 'secure123', 'mocked-captcha-token');
+      expect(mockSignup).toHaveBeenCalledWith(
+        'secure@example.com',
+        'password123',
+        'secure123',
+        'mocked-captcha-token',
+      );
     });
   });
 
