@@ -1,7 +1,7 @@
 import { jsPDF } from 'jspdf';
 
 function loadLogoImage(): Promise<HTMLImageElement | null> {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const img = new Image();
     img.src = '/logo.svg';
     img.onload = () => resolve(img);
@@ -35,7 +35,7 @@ export function formatInvoiceNumber(receiptId: string): string {
     hash |= 0;
   }
   const absHash = Math.abs(hash);
-  const part1 = (absHash & 0xFFFFFFFF).toString(16).toUpperCase().padStart(8, '0');
+  const part1 = (absHash & 0xffffffff).toString(16).toUpperCase().padStart(8, '0');
   const part2 = (100 + (absHash % 900)).toString().padStart(4, '0');
   return `${part1}-${part2}`;
 }
@@ -45,13 +45,18 @@ function parseAmount(amountStr: string) {
   if (match) {
     return {
       symbol: match[1] || '€',
-      value: parseFloat(match[2].replace(',', '.'))
+      value: parseFloat(match[2].replace(',', '.')),
     };
   }
   return { symbol: '€', value: 0 };
 }
 
-function generateInvoicePDF(logoPngDataUrl: string | null, receiptId: string, date: string, amount: string): jsPDF {
+function generateInvoicePDF(
+  logoPngDataUrl: string | null,
+  receiptId: string,
+  date: string,
+  amount: string,
+): jsPDF {
   const doc = new jsPDF({
     orientation: 'portrait',
     unit: 'pt',
@@ -88,10 +93,10 @@ function generateInvoicePDF(logoPngDataUrl: string | null, receiptId: string, da
   doc.setFont('Helvetica', 'bold');
   doc.setFontSize(10);
   doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-  
+
   const labelX = margin;
   const valueX = 180;
-  
+
   // Invoice details
   const formattedId = formatInvoiceNumber(receiptId);
   doc.text('Invoice number', labelX, currentY);
@@ -120,7 +125,7 @@ function generateInvoicePDF(logoPngDataUrl: string | null, receiptId: string, da
   doc.setFont('Helvetica', 'normal');
   doc.setTextColor(secondaryColor[0], secondaryColor[1], secondaryColor[2]);
   doc.text('EE102272396', valueX, currentY);
-  
+
   const vatId = localStorage.getItem('faas_vat_id') || 'testvat';
   currentY += 16;
   doc.setFont('Helvetica', 'bold');
@@ -132,7 +137,7 @@ function generateInvoicePDF(logoPngDataUrl: string | null, receiptId: string, da
 
   // Address Section
   currentY += 45;
-  
+
   // Left Column: Company Info (MetaCall OÜ Estonia)
   const col1X = margin;
   doc.setFont('Helvetica', 'bold');
@@ -166,7 +171,7 @@ function generateInvoicePDF(logoPngDataUrl: string | null, receiptId: string, da
   doc.setFont('Helvetica', 'normal');
   doc.setFontSize(10);
   doc.setTextColor(secondaryColor[0], secondaryColor[1], secondaryColor[2]);
-  
+
   let col2Y = currentY + 18;
   const userEmail = localStorage.getItem('faas_email') || 'jose@metacall.io';
   const customerName = userEmail.includes('jose') ? 'José Antonio Dominguez' : 'MetaCall Customer';
@@ -190,9 +195,9 @@ function generateInvoicePDF(logoPngDataUrl: string | null, receiptId: string, da
   doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
   const summaryAmountText = '€0.00';
   doc.text(summaryAmountText, margin, currentY);
-  
+
   const summaryAmountWidth = doc.getTextWidth(summaryAmountText);
-  
+
   doc.setFont('Helvetica', 'normal');
   doc.setFontSize(13);
   doc.setTextColor(secondaryColor[0], secondaryColor[1], secondaryColor[2]);
@@ -218,20 +223,21 @@ function generateInvoicePDF(logoPngDataUrl: string | null, receiptId: string, da
 
   // Parse amount and determine plan price
   const parsed = parseAmount(amount);
-  let planPrice = 80.00;
+  let planPrice = 80.0;
   let symbol = '€';
-  
+
   if (parsed.value > 0) {
     symbol = parsed.symbol;
     planPrice = parsed.value;
   } else {
     symbol = parsed.symbol;
-    planPrice = userEmail.includes('jose') ? 80.00 : 29.99;
+    planPrice = userEmail.includes('jose') ? 80.0 : 29.99;
   }
-  
-  const planName = planPrice === 80.00 
-    ? 'MetaCall Cloud Services - Premium Plan' 
-    : 'MetaCall Cloud Services - Standard Plan';
+
+  const planName =
+    planPrice === 80.0
+      ? 'MetaCall Cloud Services - Premium Plan'
+      : 'MetaCall Cloud Services - Standard Plan';
 
   // Row 1
   currentY += 20;
@@ -239,7 +245,7 @@ function generateInvoicePDF(logoPngDataUrl: string | null, receiptId: string, da
   doc.setFontSize(11);
   doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
   doc.text(planName, margin, currentY);
-  
+
   // Qty, Unit Price, Amount on exact same baseline as description name
   doc.text('1', 360, currentY, { align: 'right' });
   doc.text(`${symbol}${planPrice.toFixed(2)}`, 450, currentY, { align: 'right' });
@@ -249,7 +255,7 @@ function generateInvoicePDF(logoPngDataUrl: string | null, receiptId: string, da
   doc.setFont('Helvetica', 'normal');
   doc.setFontSize(10);
   doc.setTextColor(mutedColor[0], mutedColor[1], mutedColor[2]);
-  
+
   let billingRange = 'Jun 20-Jul 20, 2026';
   try {
     const d = new Date(Date.parse(date));
@@ -257,14 +263,17 @@ function generateInvoicePDF(logoPngDataUrl: string | null, receiptId: string, da
       const startMonth = d.toLocaleString('en-US', { month: 'short' });
       const startDay = d.getDate();
       const startYear = d.getFullYear();
-      
+
       const nextDate = new Date(d);
       nextDate.setMonth(d.getMonth() + 1);
       const endMonth = nextDate.toLocaleString('en-US', { month: 'short' });
       const endDay = nextDate.getDate();
       const endYear = nextDate.getFullYear();
-      
-      const yearStr = startYear === endYear ? `, ${startYear}` : ` ${startYear} - ${endMonth} ${endDay}, ${endYear}`;
+
+      const yearStr =
+        startYear === endYear
+          ? `, ${startYear}`
+          : ` ${startYear} - ${endMonth} ${endDay}, ${endYear}`;
       billingRange = `${startMonth} ${startDay}-${endMonth} ${endDay}${yearStr}`;
     }
   } catch {
@@ -275,7 +284,7 @@ function generateInvoicePDF(logoPngDataUrl: string | null, receiptId: string, da
   // Table Totals Section
   const totalsLabelX = 300;
   const totalsValueX = rightMargin;
-  
+
   // Subtotal
   currentY += 24;
   doc.setDrawColor(borderColor[0], borderColor[1], borderColor[2]);
@@ -351,7 +360,11 @@ function generateInvoicePDF(logoPngDataUrl: string | null, receiptId: string, da
   return doc;
 }
 
-export async function downloadInvoicePDF(receiptId: string, date: string, amount: string): Promise<void> {
+export async function downloadInvoicePDF(
+  receiptId: string,
+  date: string,
+  amount: string,
+): Promise<void> {
   const logoImg = await loadLogoImage();
   const logoPngDataUrl = logoImg ? svgToPngDataUrl(logoImg) : null;
   const doc = generateInvoicePDF(logoPngDataUrl, receiptId, date, amount);

@@ -19,8 +19,8 @@ export function TreeCheckbox({
         checked
           ? 'bg-blue-500 border-blue-500 text-white'
           : partial
-          ? 'bg-blue-500 border-blue-500 text-white opacity-80'
-          : 'bg-white border-gray-300'
+            ? 'bg-blue-500 border-blue-500 text-white opacity-80'
+            : 'bg-white border-gray-300'
       }`}
     >
       {checked && !partial && <Check size={10} strokeWidth={3} />}

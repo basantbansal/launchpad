@@ -105,7 +105,7 @@ export function LoadingOverlay({
     <div
       className={clsx(
         'absolute inset-0 bg-white/50 backdrop-blur-sm flex items-center justify-center z-50',
-        className
+        className,
       )}
     >
       <div className="bg-white border border-gray-200 rounded-lg px-5 py-4 flex items-center gap-4 shadow-lg">
@@ -159,14 +159,10 @@ export const RouteLoadingPattern = () => (
 );
 
 /** Data fetching at page top */
-export const SyncLoadingPattern = () => (
-  <InlineLoading message="Fetching deployments…" />
-);
+export const SyncLoadingPattern = () => <InlineLoading message="Fetching deployments…" />;
 
 /** Content sync overlay */
-export const TableSyncPattern = () => (
-  <LoadingOverlay message="Syncing network…" />
-);
+export const TableSyncPattern = () => <LoadingOverlay message="Syncing network…" />;
 
 /** File processing (ZIP, uploads) */
 export const FileProcessingPattern = (message = 'Processing…') => (

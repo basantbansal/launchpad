@@ -39,7 +39,12 @@ export default function LogsViewerPage() {
     };
   }, [suffix]);
 
-  const { logs, loading: loadingLogs, error: logsError, refetch } = useLogs(suffix ?? '', deployment?.prefix ?? '');
+  const {
+    logs,
+    loading: loadingLogs,
+    error: logsError,
+    refetch,
+  } = useLogs(suffix ?? '', deployment?.prefix ?? '');
 
   if (loadingDep) {
     return <PageLoading message="Loading deployment…" spinnerSize={24} />;
@@ -67,7 +72,6 @@ export default function LogsViewerPage() {
   return (
     <div className="flex items-start justify-center min-h-[calc(100vh-80px)] p-0.5 sm:p-2 pt-0.5 sm:pt-2 bg-slate-50/50 animate-in fade-in duration-300">
       <div className="w-full max-w-6xl flex flex-col h-[calc(100vh-140px)] min-h-125 border border-gray-200 bg-white shadow-sm overflow-hidden rounded-sm">
-
         {/* Header bar */}
         <div className="flex items-center justify-between px-4 py-2.5 border-b border-gray-100 bg-gray-50/60 shrink-0">
           <div className="flex items-center gap-3">

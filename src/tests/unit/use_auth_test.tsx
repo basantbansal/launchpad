@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import { AuthProvider, useAuth } from '@/features/auth/hooks/useAuth';
 import { api } from '@/lib/api-client';
 
-// TODO: These tests are basic and primarily ensure the auth hook's state management and localStorage interactions work as expected. 
+// TODO: These tests are basic and primarily ensure the auth hook's state management and localStorage interactions work as expected.
 // More comprehensive tests could be added in the future to cover edge cases, error handling, and integration with other components.
 
 vi.mock('@/lib/api-client', () => ({
@@ -16,9 +16,7 @@ vi.mock('@/lib/api-client', () => ({
 
 const mockedApi = vi.mocked(api);
 
-const wrapper = ({ children }: { children: ReactNode }) => (
-  <AuthProvider>{children}</AuthProvider>
-);
+const wrapper = ({ children }: { children: ReactNode }) => <AuthProvider>{children}</AuthProvider>;
 
 describe('useAuth / AuthProvider', () => {
   beforeEach(() => {

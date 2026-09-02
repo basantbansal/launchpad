@@ -11,8 +11,12 @@ function Bomb({ shouldThrow }: { shouldThrow: boolean }) {
 const originalConsoleError = console.error;
 
 describe('ErrorBoundary', () => {
-  beforeEach(() => { console.error = vi.fn(); });
-  afterEach(() => { console.error = originalConsoleError; });
+  beforeEach(() => {
+    console.error = vi.fn();
+  });
+  afterEach(() => {
+    console.error = originalConsoleError;
+  });
 
   it('renders children when no error is thrown', () => {
     render(

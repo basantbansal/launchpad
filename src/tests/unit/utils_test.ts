@@ -1,5 +1,13 @@
 import { describe, it, expect } from 'vitest';
-import { cn, capitalize, truncate, formatDate, timeAgo, safeStringify, isValidEmail } from '@/lib/utils';
+import {
+  cn,
+  capitalize,
+  truncate,
+  formatDate,
+  timeAgo,
+  safeStringify,
+  isValidEmail,
+} from '@/lib/utils';
 
 describe('cn', () => {
   it('merges class strings', () => {

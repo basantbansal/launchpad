@@ -8,7 +8,11 @@
  * Consumers: import { api, isApiError, isAbortError } from '@/lib/api-client'.
  */
 
-import Protocol, { isProtocolError, ResourceType as ProtocolResourceType, LogType } from '@metacall/protocol';
+import Protocol, {
+  isProtocolError,
+  ResourceType as ProtocolResourceType,
+  LogType,
+} from '@metacall/protocol';
 import type { API, Resource, SubscriptionDeploy } from '@metacall/protocol';
 import type { Deployment, MetaCallJSON, Plans } from '@/shared/types';
 import { readMockSubscriptions } from '@/shared/lib/plan';
@@ -23,8 +27,8 @@ async function authFetch(input: RequestInfo | URL, init?: RequestInit): Promise<
     typeof input === 'string'
       ? input
       : input instanceof URL
-      ? input.toString()
-      : (input as Request).url;
+        ? input.toString()
+        : (input as Request).url;
 
   const newInit = { ...init };
 
@@ -38,7 +42,7 @@ async function authFetch(input: RequestInfo | URL, init?: RequestInit): Promise<
         Object.defineProperty(res, 'statusText', {
           value: text.trim(),
           writable: false,
-          configurable: true
+          configurable: true,
         });
       }
     } catch {
@@ -52,7 +56,7 @@ async function authFetch(input: RequestInfo | URL, init?: RequestInit): Promise<
 const BASE_URL =
   typeof window !== 'undefined'
     ? window.location.origin
-    : (import.meta.env.VITE_FAAS_URL as string | undefined) ?? 'https://dashboard.metacall.io';
+    : ((import.meta.env.VITE_FAAS_URL as string | undefined) ?? 'https://dashboard.metacall.io');
 
 function getToken(): string {
   return localStorage.getItem(TOKEN_KEY) ?? (import.meta.env.VITE_FAAS_TOKEN as string) ?? '';
@@ -79,10 +83,7 @@ export function isApiError(err: unknown): err is ApiError {
 }
 
 export function isAbortError(err: unknown): err is Error {
-  return (
-    err instanceof Error &&
-    (err.name === 'AbortError' || err.name === 'TimeoutError')
-  );
+  return err instanceof Error && (err.name === 'AbortError' || err.name === 'TimeoutError');
 }
 
 function mapError(err: unknown): never {
@@ -150,11 +151,11 @@ export const api = {
 
       const mockSubs = readMockSubscriptions();
       const merged: Record<string, number> = { ...realSubs };
-      
+
       for (const [key, count] of Object.entries(mockSubs)) {
         merged[key] = (merged[key] || 0) + count;
       }
-      
+
       return merged;
     } catch (err) {
       mapError(err);
@@ -188,7 +189,7 @@ export const api = {
 
       const mockSubs = readMockSubscriptions();
       const totalSubs: Record<string, number> = { ...realSubs };
-      
+
       for (const [key, count] of Object.entries(mockSubs)) {
         totalSubs[key] = (totalSubs[key] || 0) + count;
       }
@@ -202,7 +203,7 @@ export const api = {
           merged.push({
             id: `CF222FF2-037${5 + i}`,
             plan: planName as Plans,
-            date: Math.floor(Date.now() / 1000) - (86400 * 30 * i),
+            date: Math.floor(Date.now() / 1000) - 86400 * 30 * i,
             deploy: '',
           });
         }
@@ -297,11 +298,9 @@ export const api = {
       if (!response.ok) {
         const data = await response.text().catch(() => null);
         throw new ApiError(
-          `HTTP ${response.status}: ${response.statusText}${
-            data ? ` - ${data}` : ''
-          }`,
+          `HTTP ${response.status}: ${response.statusText}${data ? ` - ${data}` : ''}`,
           response.status,
-          data
+          data,
         );
       }
 
@@ -341,11 +340,9 @@ export const api = {
       if (!response.ok) {
         const data = await response.text().catch(() => null);
         throw new ApiError(
-          `HTTP ${response.status}: ${response.statusText}${
-            data ? ` - ${data}` : ''
-          }`,
+          `HTTP ${response.status}: ${response.statusText}${data ? ` - ${data}` : ''}`,
           response.status,
-          data
+          data,
         );
       }
 
@@ -387,9 +384,9 @@ export const api = {
           Accept: 'application/json, text/plain, */*',
           Host: new URL(BASE_URL).host,
           Origin: BASE_URL,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password, 'g-recaptcha-response': captchaToken || 'empty' })
+        body: JSON.stringify({ email, password, 'g-recaptcha-response': captchaToken || 'empty' }),
       });
 
       if (!res.ok) {
@@ -425,9 +422,9 @@ export const api = {
           Accept: 'application/json, text/plain, */*',
           Host: new URL(BASE_URL).host,
           Origin: BASE_URL,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password, alias, 'g-recaptcha-response': captchaToken || 'empty' })
+        body: JSON.stringify({ email, password, alias, 'g-recaptcha-response': captchaToken || 'empty' }),
       });
 
       if (!res.ok) {

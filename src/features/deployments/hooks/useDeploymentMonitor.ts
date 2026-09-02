@@ -14,13 +14,11 @@ interface UseDeploymentMonitorOptions {
   onFailed: (message: string) => void;
 }
 
-export function useDeploymentMonitor({
-  target,
-  onReady,
-  onFailed,
-}: UseDeploymentMonitorOptions) {
+export function useDeploymentMonitor({ target, onReady, onFailed }: UseDeploymentMonitorOptions) {
   const [status, setStatus] = useState<ProgressStatusValue>('create');
-  const [prevTargetKey, setPrevTargetKey] = useState(() => target ? `${target.suffix}-${target.startedAt}` : '');
+  const [prevTargetKey, setPrevTargetKey] = useState(() =>
+    target ? `${target.suffix}-${target.startedAt}` : '',
+  );
 
   const currentKey = target ? `${target.suffix}-${target.startedAt}` : '';
   if (currentKey !== prevTargetKey) {

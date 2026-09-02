@@ -53,7 +53,7 @@ export default function PlanPage() {
     },
   ];
 
-  const handleSelectPlan = (plan: typeof plans[0]) => {
+  const handleSelectPlan = (plan: (typeof plans)[0]) => {
     setCheckoutPlan(plan);
   };
 
@@ -79,13 +79,24 @@ export default function PlanPage() {
       <div className="grow flex flex-col items-center justify-center p-6 animate-in fade-in duration-500 bg-white">
         <div className="w-full max-w-md border border-slate-200 bg-white p-8 text-center shadow-lg rounded-lg">
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg className="w-8 h-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+            <svg
+              className="w-8 h-8 text-green-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2.5}
+                d="M5 13l4 4L19 7"
+              />
             </svg>
           </div>
           <h2 className="text-xl font-bold text-slate-900 mb-2">Subscription Activated!</h2>
           <p className="text-sm text-slate-500 mb-4">
-            You have successfully subscribed to the <span className="font-semibold text-slate-800">{checkoutPlan?.name}</span>.
+            You have successfully subscribed to the{' '}
+            <span className="font-semibold text-slate-800">{checkoutPlan?.name}</span>.
           </p>
           <p className="text-xs text-blue-600 font-medium animate-pulse">
             Redirecting to Settings page...

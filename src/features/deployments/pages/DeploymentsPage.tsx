@@ -55,9 +55,7 @@ export default function DeploymentsPage() {
           {/* Page header */}
           <div className="flex flex-wrap items-end justify-between gap-4 pb-2 border-b border-slate-500">
             <div>
-              <h1 className="text-2xl font-semibold text-slate-800 tracking-tight">
-                Deployments
-              </h1>
+              <h1 className="text-2xl font-semibold text-slate-800 tracking-tight">Deployments</h1>
               <p className="text-sm font-semibold text-gray-500 mt-1">
                 {loading
                   ? 'Fetching active deployments…'
@@ -112,9 +110,7 @@ export default function DeploymentsPage() {
 
           {/* Table Container */}
           <div className="bg-white border border-gray-300 w-full relative">
-            {loading && (
-              <LoadingOverlay message="Syncing network…" spinnerSize={16} />
-            )}
+            {loading && <LoadingOverlay message="Syncing network…" spinnerSize={16} />}
             <DeploymentTable deployments={deployments} onDelete={suffix => setPending(suffix)} />
           </div>
         </div>
