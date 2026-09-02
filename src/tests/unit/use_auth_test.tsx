@@ -49,7 +49,7 @@ describe('useAuth / AuthProvider', () => {
       await result.current.login('dev@example.com', 'secret');
     });
 
-    expect(mockedApi.login).toHaveBeenCalledWith('dev@example.com', 'secret');
+    expect(mockedApi.login).toHaveBeenCalledWith('dev@example.com', 'secret', undefined);
     expect(localStorage.getItem('faas_token')).toBe('token-xyz');
     expect(localStorage.getItem('faas_user_email')).toBe('dev@example.com');
     expect(result.current.user).toEqual({ email: 'dev@example.com' });
@@ -63,7 +63,7 @@ describe('useAuth / AuthProvider', () => {
       await result.current.signup('new@example.com', 'secret', 'new-user');
     });
 
-    expect(mockedApi.signup).toHaveBeenCalledWith('new@example.com', 'secret', 'new-user');
+    expect(mockedApi.signup).toHaveBeenCalledWith('new@example.com', 'secret', 'new-user', undefined);
     expect(localStorage.getItem('faas_token')).toBe('token-signup');
     expect(localStorage.getItem('faas_user_email')).toBe('new@example.com');
     expect(result.current.user).toEqual({ email: 'new@example.com' });
