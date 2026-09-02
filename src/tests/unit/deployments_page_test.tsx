@@ -42,11 +42,12 @@ describe('DeploymentsPage Toast Notifications', () => {
     });
   });
 
-  const renderPage = () => render(
-    <MemoryRouter>
-      <DeploymentsPage />
-    </MemoryRouter>
-  );
+  const renderPage = () =>
+    render(
+      <MemoryRouter>
+        <DeploymentsPage />
+      </MemoryRouter>,
+    );
 
   it('calls toast.success on successful deployment deletion', async () => {
     mockApiDelete.mockResolvedValueOnce(undefined);

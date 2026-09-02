@@ -31,13 +31,14 @@ describe('DeploymentFunctionPage Toast Notifications', () => {
     vi.clearAllMocks();
   });
 
-  const renderPage = () => render(
-    <MemoryRouter initialEntries={['/deployments/test-suffix']}>
-      <Routes>
-        <Route path="/deployments/:id" element={<DeploymentFunctionPage />} />
-      </Routes>
-    </MemoryRouter>
-  );
+  const renderPage = () =>
+    render(
+      <MemoryRouter initialEntries={['/deployments/test-suffix']}>
+        <Routes>
+          <Route path="/deployments/:id" element={<DeploymentFunctionPage />} />
+        </Routes>
+      </MemoryRouter>,
+    );
 
   it('calls toast.success on successful deletion', async () => {
     mockInspect.mockResolvedValueOnce({

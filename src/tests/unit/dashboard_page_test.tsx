@@ -42,11 +42,12 @@ describe('DashboardPage Toast Notifications', () => {
     });
   });
 
-  const renderPage = () => render(
-    <MemoryRouter>
-      <DashboardPage />
-    </MemoryRouter>
-  );
+  const renderPage = () =>
+    render(
+      <MemoryRouter>
+        <DashboardPage />
+      </MemoryRouter>,
+    );
 
   it('calls toast.success on successful deployment deletion', async () => {
     mockApiDelete.mockResolvedValueOnce(undefined);
@@ -76,7 +77,9 @@ describe('DashboardPage Toast Notifications', () => {
     fireEvent.click(confirmBtn);
 
     await waitFor(() => {
-      expect(toast.error).toHaveBeenCalledWith('Failed to delete deployment: Dashboard network error');
+      expect(toast.error).toHaveBeenCalledWith(
+        'Failed to delete deployment: Dashboard network error',
+      );
     });
   });
 });

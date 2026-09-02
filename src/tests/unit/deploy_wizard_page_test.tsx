@@ -20,7 +20,7 @@ vi.mock('@/features/deployments/hooks/useDeploymentMonitor', () => ({
     mockOnReady = onReady;
     mockOnFailed = onFailed;
     return { status: 'create' };
-  }
+  },
 }));
 
 vi.mock('sonner', () => ({
@@ -41,7 +41,7 @@ describe('DeployWizardPage Toast Notifications', () => {
     render(
       <MemoryRouter>
         <DeployWizardPage />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     if (mockOnReady) {
@@ -57,7 +57,7 @@ describe('DeployWizardPage Toast Notifications', () => {
     render(
       <MemoryRouter>
         <DeployWizardPage />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     if (mockOnFailed) {

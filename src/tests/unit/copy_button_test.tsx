@@ -24,7 +24,7 @@ describe('CopyButton', () => {
     });
 
     render(<CopyButton text="test text" />);
-    
+
     const button = screen.getByRole('button');
     fireEvent.click(button);
 
@@ -43,7 +43,7 @@ describe('CopyButton', () => {
     });
 
     render(<CopyButton text="test text" />);
-    
+
     const button = screen.getByRole('button');
     fireEvent.click(button);
 
