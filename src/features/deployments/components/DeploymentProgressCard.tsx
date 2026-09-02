@@ -12,10 +12,10 @@ interface DeploymentProgressCardProps {
 const ESTIMATED_SECONDS = 40;
 
 const STEPS = [
-  { id: 'upload',   label: 'Uploading'  },
-  { id: 'build',    label: 'Building'   },
+  { id: 'upload', label: 'Uploading' },
+  { id: 'build', label: 'Building' },
   { id: 'finalize', label: 'Finalizing' },
-  { id: 'live',     label: 'Live'       },
+  { id: 'live', label: 'Live' },
 ];
 
 const TIPS = [
@@ -46,11 +46,7 @@ function calcProgress(elapsed: number, status: ProgressStatusValue) {
   return Math.min(92, Math.round(14 + 78 * (1 - Math.exp(-elapsed / 18))));
 }
 
-export function DeploymentProgressCard({
-  suffix,
-  status,
-  startedAt,
-}: DeploymentProgressCardProps) {
+export function DeploymentProgressCard({ suffix, status, startedAt }: DeploymentProgressCardProps) {
   const [elapsed, setElapsed] = useState(() => getElapsed(startedAt));
   const [prevStartedAt, setPrevStartedAt] = useState(startedAt);
   const [tipIdx, setTipIdx] = useState(0);
@@ -60,8 +56,8 @@ export function DeploymentProgressCard({
     setElapsed(getElapsed(startedAt));
   }
 
-  const isError   = status === 'error' || status === 'failed' || status === 'fail';
-  const isDone    = status === 'ready';
+  const isError = status === 'error' || status === 'failed' || status === 'fail';
+  const isDone = status === 'ready';
   const isBuilding = !isError && !isDone;
 
   // Live elapsed counter
@@ -78,7 +74,7 @@ export function DeploymentProgressCard({
     return () => window.clearInterval(id);
   }, [isBuilding]);
 
-  const pct       = useMemo(() => calcProgress(elapsed, status), [elapsed, status]);
+  const pct = useMemo(() => calcProgress(elapsed, status), [elapsed, status]);
   const remaining = useMemo(() => Math.max(0, Math.round(ESTIMATED_SECONDS - elapsed)), [elapsed]);
   const activeStep = getStepIndex(elapsed, status);
 
@@ -88,7 +84,6 @@ export function DeploymentProgressCard({
   return (
     <div className="w-full max-w-md mx-auto">
       <div className="bg-white border border-slate-200 overflow-hidden">
-
         {/* Animated progress line */}
         <div className="h-[2px] w-full bg-slate-100 relative overflow-hidden">
           <div
@@ -104,14 +99,15 @@ export function DeploymentProgressCard({
         </div>
 
         <div className="px-7 py-6 flex flex-col gap-6">
-
           {/* Status header */}
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3 min-w-0">
               {/* Icon */}
-              <span className={`shrink-0 ${
-                isError ? 'text-red-400' : isDone ? 'text-emerald-500' : 'text-blue-500'
-              }`}>
+              <span
+                className={`shrink-0 ${
+                  isError ? 'text-red-400' : isDone ? 'text-emerald-500' : 'text-blue-500'
+                }`}
+              >
                 {isError ? (
                   <AlertCircle size={18} strokeWidth={1.8} />
                 ) : isDone ? (
@@ -126,16 +122,16 @@ export function DeploymentProgressCard({
                 <p className="text-[11px] font-medium text-slate-400 uppercase tracking-widest leading-none mb-1">
                   {isError ? 'Failed' : isDone ? 'Deployed' : 'Deploying'}
                 </p>
-                <p className="text-sm font-semibold text-slate-800 font-mono truncate">
-                  {suffix}
-                </p>
+                <p className="text-sm font-semibold text-slate-800 font-mono truncate">{suffix}</p>
               </div>
             </div>
 
             {/* Percentage / elapsed */}
             <div className="shrink-0 text-right">
               {!isError && (
-                <p className={`text-sm font-semibold tabular-nums ${isDone ? 'text-emerald-500' : 'text-slate-700'}`}>
+                <p
+                  className={`text-sm font-semibold tabular-nums ${isDone ? 'text-emerald-500' : 'text-slate-700'}`}
+                >
                   {pct}%
                 </p>
               )}
@@ -151,41 +147,53 @@ export function DeploymentProgressCard({
           {!isError && (
             <div className="flex items-center gap-0">
               {STEPS.map((step, i) => {
-                const done   = i < activeStep || isDone;
+                const done = i < activeStep || isDone;
                 const active = i === activeStep && isBuilding;
-                const last   = i === STEPS.length - 1;
+                const last = i === STEPS.length - 1;
 
                 return (
                   <div key={step.id} className={`flex items-center ${last ? '' : 'flex-1'}`}>
                     {/* Circle */}
                     <div className="flex flex-col items-center gap-1.5">
-                      <div className={`w-5 h-5 rounded-full flex items-center justify-center transition-all duration-500 ${
-                        done
-                          ? 'bg-emerald-500'
-                          : active
-                            ? 'bg-blue-500'
-                            : 'bg-slate-100 border border-slate-200'
-                      }`}>
+                      <div
+                        className={`w-5 h-5 rounded-full flex items-center justify-center transition-all duration-500 ${
+                          done
+                            ? 'bg-emerald-500'
+                            : active
+                              ? 'bg-blue-500'
+                              : 'bg-slate-100 border border-slate-200'
+                        }`}
+                      >
                         {done ? (
                           <CheckCircle2 size={11} className="text-white" strokeWidth={2.5} />
                         ) : active ? (
-                          <Loader2 size={11} className="text-white animate-spin" strokeWidth={2.5} />
+                          <Loader2
+                            size={11}
+                            className="text-white animate-spin"
+                            strokeWidth={2.5}
+                          />
                         ) : (
-                          <span className={`w-1.5 h-1.5 rounded-full ${i > activeStep ? 'bg-slate-300' : 'bg-blue-400'}`} />
+                          <span
+                            className={`w-1.5 h-1.5 rounded-full ${i > activeStep ? 'bg-slate-300' : 'bg-blue-400'}`}
+                          />
                         )}
                       </div>
-                      <span className={`text-[9px] font-semibold uppercase tracking-wider whitespace-nowrap ${
-                        done ? 'text-emerald-500' : active ? 'text-blue-500' : 'text-slate-300'
-                      }`}>
+                      <span
+                        className={`text-[9px] font-semibold uppercase tracking-wider whitespace-nowrap ${
+                          done ? 'text-emerald-500' : active ? 'text-blue-500' : 'text-slate-300'
+                        }`}
+                      >
                         {step.label}
                       </span>
                     </div>
 
                     {/* Connector line */}
                     {!last && (
-                      <div className={`h-[1px] flex-1 mx-1 mb-4 transition-all duration-700 ${
-                        done ? 'bg-emerald-300' : active ? 'bg-blue-200' : 'bg-slate-100'
-                      }`} />
+                      <div
+                        className={`h-[1px] flex-1 mx-1 mb-4 transition-all duration-700 ${
+                          done ? 'bg-emerald-300' : active ? 'bg-blue-200' : 'bg-slate-100'
+                        }`}
+                      />
                     )}
                   </div>
                 );

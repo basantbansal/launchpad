@@ -11,8 +11,12 @@ import { AuthLoadingPattern, RouteLoadingPattern } from '@/shared/ui/LoadingStat
 const DashboardPage = lazy(() => import('@/features/dashboard/pages/DashboardPage'));
 const DeploymentsPage = lazy(() => import('@/features/deployments/pages/DeploymentsPage'));
 const DeployWizardPage = lazy(() => import('@/features/deployments/components/DeployWizard'));
-const DeployRepositoryPage = lazy(() => import('@/features/deployments/pages/DeployRepositoryPage'));
-const DeploymentDetailPage = lazy(() => import('@/features/deployments/pages/DeploymentFunctionPage'));
+const DeployRepositoryPage = lazy(
+  () => import('@/features/deployments/pages/DeployRepositoryPage'),
+);
+const DeploymentDetailPage = lazy(
+  () => import('@/features/deployments/pages/DeploymentFunctionPage'),
+);
 const LogsViewerPage = lazy(() => import('@/features/logs/pages/LogsViewerPage'));
 const DeployHubPage = lazy(() => import('@/features/deployments/pages/DeployPage'));
 const SettingsPage = lazy(() => import('@/features/settings/pages/SettingsPage'));
@@ -25,10 +29,13 @@ const PageLoader = () => <RouteLoadingPattern />;
 
 // Fallback for when a lazy-loaded chunk fails (e.g., after a new deployment)
 const RouteErrorFallback = () => (
-  <div role="alert" className="flex flex-col items-center justify-center min-h-[50vh] p-4 text-center">
+  <div
+    role="alert"
+    className="flex flex-col items-center justify-center min-h-[50vh] p-4 text-center"
+  >
     <h2 className="text-xl font-semibold mb-2">Something went wrong loading this page.</h2>
     <p className="text-gray-600 mb-4">There might be a new version of the app available.</p>
-    <button 
+    <button
       onClick={() => window.location.reload()}
       className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
     >
@@ -42,26 +49,26 @@ function ProtectedRoute() {
   const location = useLocation();
 
   if (loading) return <FullPageSpinner />;
-  
+
   // Pass the target location to the login page so we can redirect them back later
   if (!user) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
-  
+
   // Renders nested routes instead of children
-  return <Outlet />; 
+  return <Outlet />;
 }
 
 function GuestRoute() {
   const { user, loading } = useAuth();
   const location = useLocation();
-  
+
   // Check if they were trying to go somewhere specific, otherwise default to "/"
-  const from = location.state?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || '/';
 
   if (loading) return <FullPageSpinner />;
   if (user) return <Navigate to={from} replace />;
-  
+
   return <Outlet />;
 }
 
@@ -91,7 +98,7 @@ export function AppRouter() {
       <Route element={<ProtectedRoute />}>
         <Route element={<AppLayout />}>
           <Route path="/" element={<DashboardPage />} />
-          
+
           <Route path="/deployments">
             <Route index element={<DeploymentsPage />} />
             <Route path="new" element={<DeployHubPage />} />

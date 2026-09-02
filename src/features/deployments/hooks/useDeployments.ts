@@ -28,9 +28,7 @@ export function useDeployments(pollIntervalMs = 30_000): UseDeploymentsResult {
         // Intentional abort — do not update state
         if (isAbortError(err)) return;
         if (controller.signal.aborted) return;
-        setError(
-          (err instanceof Error ? err.message : null) ?? 'Failed to fetch deployments',
-        );
+        setError((err instanceof Error ? err.message : null) ?? 'Failed to fetch deployments');
       } finally {
         if (!controller.signal.aborted) setLoading(false);
       }

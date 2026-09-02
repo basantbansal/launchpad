@@ -134,14 +134,24 @@ export function ProgressBar({
       {(showLabel || showValue) && (
         <div className="flex items-center justify-between gap-2">
           {showLabel ? (
-            <span className={clsx('font-semibold uppercase tracking-[0.16em] text-slate-400', textClass)}>
+            <span
+              className={clsx(
+                'font-semibold uppercase tracking-[0.16em] text-slate-400',
+                textClass,
+              )}
+            >
               {meta.label}
             </span>
           ) : (
             <span />
           )}
           {showValue && (
-            <span className={clsx('font-semibold text-slate-500 min-w-8 text-right tabular-nums', textClass)}>
+            <span
+              className={clsx(
+                'font-semibold text-slate-500 min-w-8 text-right tabular-nums',
+                textClass,
+              )}
+            >
               {percentage}%
             </span>
           )}

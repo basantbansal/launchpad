@@ -114,4 +114,3 @@ export function removeMockSubscription(plan: string) {
   }
   window.localStorage.setItem('faas_mock_subscriptions', JSON.stringify(current));
 }
-

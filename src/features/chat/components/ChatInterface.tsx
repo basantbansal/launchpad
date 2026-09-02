@@ -8,7 +8,6 @@ type ChatMessage = {
   time: string;
 };
 
-
 const seedConversation: ChatMessage[] = [
   {
     id: 'm-1',
@@ -18,9 +17,7 @@ const seedConversation: ChatMessage[] = [
   },
 ];
 
-const cannedFollowUps = [
-  'Under Development Right now',
-];
+const cannedFollowUps = ['Under Development Right now'];
 
 function timeLabel(date = new Date()) {
   return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -94,10 +91,10 @@ export function ChatInterface() {
             >
               {msg.role === 'agent' && (
                 <img
-                src="/logo.svg"
-                alt="MetaCall Support"
-                className="w-10 h-10 border p-1 border-slate-200 rounded-full object-contain"
-              />
+                  src="/logo.svg"
+                  alt="MetaCall Support"
+                  className="w-10 h-10 border p-1 border-slate-200 rounded-full object-contain"
+                />
               )}
               <div className="flex flex-col max-w-[85%]">
                 <div
@@ -125,7 +122,7 @@ export function ChatInterface() {
           ) : null,
         )}
       </div>
-{/* // Input area */}
+      {/* // Input area */}
       <div className="px-1 pb-1 pt-1 bg-white border-t border-slate-100 shadow-[0_-6px_18px_-12px_rgba(0,0,0,0.15)]">
         <div className="flex items-center gap-2 bg-slate-100 border border-slate-200 rounded-5xl px-3 py-2 ">
           <input

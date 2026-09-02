@@ -13,18 +13,13 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 const mockFetch = vi.fn();
 vi.stubGlobal('fetch', mockFetch);
 
-function makeResponse(
-  status: number,
-  body?: unknown,
-  contentType = 'application/json',
-): Response {
+function makeResponse(status: number, body?: unknown, contentType = 'application/json'): Response {
   return {
     ok: status >= 200 && status < 300,
     status,
     headers: { get: (_header: string) => contentType },
     json: () => Promise.resolve(body),
-    text: () =>
-      Promise.resolve(typeof body === 'string' ? body : JSON.stringify(body)),
+    text: () => Promise.resolve(typeof body === 'string' ? body : JSON.stringify(body)),
   } as unknown as Response;
 }
 
@@ -51,9 +46,10 @@ describe('api-client', () => {
 
     const [, options] = mockFetch.mock.calls[0] as [string, RequestInit];
     const headers = options.headers;
-    const auth = headers instanceof Headers
-      ? headers.get('Authorization')
-      : (headers as Record<string, string> | undefined)?.['Authorization'];
+    const auth =
+      headers instanceof Headers
+        ? headers.get('Authorization')
+        : (headers as Record<string, string> | undefined)?.['Authorization'];
     // Protocol sends "jwt <token>" (not "Bearer")
     expect(auth).toBe('jwt abc123');
   });
@@ -66,9 +62,10 @@ describe('api-client', () => {
 
     const [, options] = mockFetch.mock.calls[0] as [string, RequestInit];
     const headers = options.headers;
-    const auth = headers instanceof Headers
-      ? headers.get('Authorization')
-      : (headers as Record<string, string> | undefined)?.['Authorization'];
+    const auth =
+      headers instanceof Headers
+        ? headers.get('Authorization')
+        : (headers as Record<string, string> | undefined)?.['Authorization'];
     // No token → no auth header (or empty/trimmed)
     expect(!auth || auth === 'jwt ' || auth === 'jwt').toBe(true);
   });
@@ -145,9 +142,10 @@ describe('api-client', () => {
       expect(options.method).toBe('GET');
       expect(options.body).toBeUndefined();
 
-      const auth = options.headers instanceof Headers
-        ? options.headers.get('Authorization')
-        : (options.headers as Record<string, string> | undefined)?.['Authorization'];
+      const auth =
+        options.headers instanceof Headers
+          ? options.headers.get('Authorization')
+          : (options.headers as Record<string, string> | undefined)?.['Authorization'];
       expect(auth).toBe('jwt my-token');
     });
 

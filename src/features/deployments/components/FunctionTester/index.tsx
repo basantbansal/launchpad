@@ -34,8 +34,8 @@ export function FunctionTester({ deployment, onScrollProgressChange }: FunctionT
       <div className="bg-slate-900 flex flex-col items-center justify-center h-full p-12 text-center">
         <p className="text-sm font-semibold text-slate-600">No exported functions</p>
         <p className="text-xs text-slate-400 mt-1.5 max-w-xs leading-relaxed">
-          This deployment does not expose any callable functions yet.
-          Deploy a package that exports functions to test them here.
+          This deployment does not expose any callable functions yet. Deploy a package that exports
+          functions to test them here.
         </p>
       </div>
     );

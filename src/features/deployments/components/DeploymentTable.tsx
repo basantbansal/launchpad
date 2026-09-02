@@ -20,7 +20,6 @@ export function DeploymentTable({
 }: DeploymentTableProps) {
   const navigate = useNavigate();
 
-
   return (
     <div className="w-full overflow-x-auto">
       <table className="w-full text-left border-collapse">

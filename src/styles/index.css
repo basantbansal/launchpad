@@ -98,7 +98,6 @@ body {
   color: var(--color-text-primary);
 }
 
-
 .auth-input:focus {
   border-bottom: 2px solid #3b82f6 !important;
   box-shadow: none !important;
