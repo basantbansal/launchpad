@@ -32,6 +32,9 @@ jobs:
       - name: Run ESLint
         run: npm run lint
 
+      - name: Check Code Formatting
+        run: npm run format:check
+
       - name: Run TypeScript Checks
         run: npm run typecheck
 
