@@ -34,7 +34,7 @@ describe('DeploymentsPage Toast Notifications', () => {
           version: 'v1',
           status: 'ready',
           packages: {},
-        } as any,
+        } as never,
       ],
       loading: false,
       error: null,

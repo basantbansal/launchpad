@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import DeployRepositoryPage from '@/features/deployments/pages/DeployRepositoryPage';
 import { MemoryRouter } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -13,11 +13,11 @@ vi.mock('@/lib/api-client', () => ({
   },
 }));
 
-let mockOnReady: ((d: any) => void) | undefined;
+let mockOnReady: ((d: unknown) => void) | undefined;
 let mockOnFailed: ((m: string) => void) | undefined;
 
 vi.mock('@/features/deployments/hooks/useDeploymentMonitor', () => ({
-  useDeploymentMonitor: ({ onReady, onFailed }: any) => {
+  useDeploymentMonitor: ({ onReady, onFailed }: Record<string, unknown>) => {
     mockOnReady = onReady;
     mockOnFailed = onFailed;
     return { status: 'create' };

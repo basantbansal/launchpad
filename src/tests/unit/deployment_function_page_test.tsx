@@ -48,7 +48,7 @@ describe('DeploymentFunctionPage Toast Notifications', () => {
       status: 'ready',
       packages: {},
       runners: [],
-    } as any);
+    } as never);
     mockDelete.mockResolvedValueOnce(undefined);
 
     renderPage();
@@ -82,7 +82,7 @@ describe('DeploymentFunctionPage Toast Notifications', () => {
       status: 'ready',
       packages: {},
       runners: [],
-    } as any);
+    } as never);
     mockDelete.mockRejectedValueOnce(new Error('Delete Error'));
 
     renderPage();
