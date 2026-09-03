@@ -19,7 +19,13 @@ let mockOnReady: ((d: unknown) => void) | undefined;
 let mockOnFailed: ((m: string) => void) | undefined;
 
 vi.mock('@/features/deployments/hooks/useDeploymentMonitor', () => ({
-  useDeploymentMonitor: ({ onReady, onFailed }: Record<string, unknown>) => {
+  useDeploymentMonitor: ({
+    onReady,
+    onFailed,
+  }: {
+    onReady?: (d: unknown) => void;
+    onFailed?: (m: string) => void;
+  }) => {
     mockOnReady = onReady;
     mockOnFailed = onFailed;
     return { status: 'create' };
