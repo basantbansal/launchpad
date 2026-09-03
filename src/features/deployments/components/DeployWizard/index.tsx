@@ -319,8 +319,10 @@ export default function DeployWizardPage() {
   if (!file) {
     return (
       <div className="grow flex flex-col items-center justify-center p-6 bg-white">
-        <p className="text-red-500 font-semibold mb-4">No deployment file found. Please select a file from the Deploy.</p>
-        <button 
+        <p className="text-red-500 font-semibold mb-4">
+          No deployment file found. Please select a file from the Deploy.
+        </p>
+        <button
           onClick={() => navigate('/deployments/new')}
           className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-100 transition-colors"
         >
