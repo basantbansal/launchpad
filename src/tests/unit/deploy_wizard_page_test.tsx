@@ -9,6 +9,8 @@ vi.mock('@/lib/api-client', () => ({
   api: {
     upload: vi.fn(),
     deploy: vi.fn(),
+    listSubscriptions: vi.fn().mockResolvedValue({}),
+    inspect: vi.fn().mockResolvedValue([]),
   },
 }));
 
@@ -39,7 +41,7 @@ describe('DeployWizardPage Toast Notifications', () => {
 
   it('calls toast.success on successful deploy', async () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter initialEntries={[{ state: { file: new File([''], 'test.zip'), plan: 'Free' } }]}>
         <DeployWizardPage />
       </MemoryRouter>,
     );
@@ -55,7 +57,7 @@ describe('DeployWizardPage Toast Notifications', () => {
 
   it('calls toast.error on failed deploy', async () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter initialEntries={[{ state: { file: new File([''], 'test.zip'), plan: 'Free' } }]}>
         <DeployWizardPage />
       </MemoryRouter>,
     );

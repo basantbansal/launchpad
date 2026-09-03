@@ -11,6 +11,8 @@ vi.mock('@/features/deployments/hooks/useDeployments');
 vi.mock('@/lib/api-client', () => ({
   api: {
     deployDelete: vi.fn(),
+    listSubscriptions: vi.fn().mockResolvedValue({}),
+    inspect: vi.fn().mockResolvedValue([]),
   },
 }));
 vi.mock('sonner', () => ({

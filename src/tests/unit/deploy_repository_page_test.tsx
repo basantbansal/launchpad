@@ -10,6 +10,8 @@ vi.mock('@/lib/api-client', () => ({
     add: vi.fn(),
     deploy: vi.fn(),
     branchList: vi.fn().mockResolvedValue(['main']),
+    listSubscriptions: vi.fn().mockResolvedValue({}),
+    inspect: vi.fn().mockResolvedValue([]),
   },
 }));
 

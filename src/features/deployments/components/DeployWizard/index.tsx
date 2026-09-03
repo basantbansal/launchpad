@@ -317,8 +317,17 @@ export default function DeployWizardPage() {
   const nextEnvId = envRows.length > 0 ? Math.max(...envRows.map(r => r.id)) + 1 : 1;
   const selectedFilesArray = Array.from(selectedPaths);
   if (!file) {
-    setDeployError('No deployment file found. Please select a file from the Deploy.');
-    return null;
+    return (
+      <div className="grow flex flex-col items-center justify-center p-6 bg-white">
+        <p className="text-red-500 font-semibold mb-4">No deployment file found. Please select a file from the Deploy.</p>
+        <button 
+          onClick={() => navigate('/deployments/new')}
+          className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-100 transition-colors"
+        >
+          Go Back
+        </button>
+      </div>
+    );
   }
 
   // Show slot occupied warning page
